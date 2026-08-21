@@ -1,0 +1,15 @@
+# Dependencies
+node_modules/
+
+# Environment Variables
+.env
+
+# Ignored Documentation & Project Notes
+DEPLOYMENT_GUIDE.md
+LAPORAN_FTR_SIAP*
+new.txt
+util.txt
+
+# Logs & System
+*.log
+.DS_Store

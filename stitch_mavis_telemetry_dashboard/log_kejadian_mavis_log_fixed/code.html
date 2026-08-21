@@ -1,0 +1,350 @@
+<!DOCTYPE html><html class="dark" lang="en" style="width: 1280px; height: 1024px; overflow: hidden; position: relative;"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>MAVIS - Log Kejadian</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;family=JetBrains+Mono:wght@500;600&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary-container": "#00424e",
+                        "inverse-on-surface": "#283044",
+                        "outline-variant": "#3c4a42",
+                        "background": "#0b1326",
+                        "on-secondary": "#003640",
+                        "surface-container-highest": "#2d3449",
+                        "primary-container": "#10b981",
+                        "surface-container-high": "#222a3d",
+                        "on-error-container": "#ffdad6",
+                        "secondary": "#4cd7f6",
+                        "on-tertiary-container": "#313852",
+                        "on-surface": "#dae2fd",
+                        "surface-dim": "#0b1326",
+                        "primary-fixed": "#6ffbbe",
+                        "on-primary-container": "#00422b",
+                        "tertiary-fixed-dim": "#bec5e5",
+                        "tertiary": "#bec5e5",
+                        "surface": "#0b1326",
+                        "surface-variant": "#2d3449",
+                        "on-error": "#690005",
+                        "error-container": "#93000a",
+                        "on-tertiary": "#282f49",
+                        "surface-tint": "#4edea3",
+                        "inverse-primary": "#006c49",
+                        "outline": "#86948a",
+                        "on-secondary-fixed": "#001f26",
+                        "error": "#ffb4ab",
+                        "secondary-container": "#03b5d3",
+                        "secondary-fixed": "#acedff",
+                        "inverse-surface": "#dae2fd",
+                        "on-secondary-fixed-variant": "#004e5c",
+                        "on-primary-fixed-variant": "#005236",
+                        "tertiary-fixed": "#dbe1ff",
+                        "primary": "#4edea3",
+                        "tertiary-container": "#9ba2c1",
+                        "surface-bright": "#31394d",
+                        "surface-container-low": "#131b2e",
+                        "secondary-fixed-dim": "#4cd7f6",
+                        "on-surface-variant": "#bbcabf",
+                        "primary-fixed-dim": "#4edea3",
+                        "on-primary-fixed": "#002113",
+                        "surface-container-lowest": "#060e20",
+                        "on-tertiary-fixed-variant": "#3e4660",
+                        "on-tertiary-fixed": "#131a33",
+                        "surface-container": "#171f33",
+                        "on-background": "#dae2fd",
+                        "on-primary": "#003824"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "md": "24px",
+                        "gutter": "20px",
+                        "lg": "32px",
+                        "xl": "48px",
+                        "xs": "8px",
+                        "base": "4px",
+                        "margin": "40px",
+                        "sm": "16px"
+                    },
+                    "fontFamily": {
+                        "label-md": ["JetBrains Mono"],
+                        "label-sm": ["JetBrains Mono"],
+                        "headline-lg": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "data-num": ["JetBrains Mono"],
+                        "display-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "label-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "data-num": ["20px", { "lineHeight": "24px", "fontWeight": "600" }],
+                        "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        /* Base styling overrides for clean minimal look */
+        body { background-color: theme('colors.background'); color: theme('colors.on-background'); }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: theme('colors.surface-container'); }
+        ::-webkit-scrollbar-thumb { background: theme('colors.surface-variant'); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: theme('colors.outline'); }
+
+        .glass-panel {
+            background-color: rgba(30, 41, 59, 0.4);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid theme('colors.surface-variant');
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md text-body-md antialiased overflow-hidden flex h-screen">
+<!-- SideNavBar -->
+<nav class="h-screen w-64 fixed left-0 top-0 bg-background/40 backdrop-blur-xl border-r border-outline-variant/30 flex flex-col py-xl px-sm z-50">
+<div class="mb-lg px-sm">
+<h1 class="font-headline-md text-headline-md font-bold text-primary">MAVIS-01</h1>
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase mt-1">Connected</p>
+</div>
+<ul class="flex-1 flex flex-col gap-xs mt-md">
+<!-- Beranda -->
+<li class="">
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:bg-surface-variant/20 hover:text-primary transition-colors active:scale-95 duration-150" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">dashboard</span>
+<span class="font-body-md text-body-md">Beranda</span>
+</a>
+</li>
+<!-- Log Kejadian (Active) -->
+<li class="">
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-primary font-bold border-r-2 border-primary bg-primary/10 hover:bg-surface-variant/20 hover:text-primary transition-colors active:scale-95 duration-150" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">history</span>
+<span class="font-body-md text-body-md">Log Kejadian</span>
+</a>
+</li>
+<!-- Analisis Data -->
+<li class="">
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:bg-surface-variant/20 hover:text-primary transition-colors active:scale-95 duration-150" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">analytics</span>
+<span class="font-body-md text-body-md">Analisis Data</span>
+</a>
+</li>
+<!-- Pengaturan Perangkat -->
+<li class="">
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:bg-surface-variant/20 hover:text-primary transition-colors active:scale-95 duration-150" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">settings</span>
+<span class="font-body-md text-body-md">Pengaturan Perangkat</span>
+</a>
+</li>
+<!-- Akun Pengguna -->
+<li class="">
+
+</li>
+</ul>
+<div class="mt-auto px-sm">
+<button class="w-full py-sm bg-primary-container text-on-primary-container font-label-md text-label-md rounded-DEFAULT hover:bg-primary transition-colors">
+            New Analysis
+        </button>
+</div>
+</nav>
+<!-- Main Content Area -->
+<div class="flex-1 ml-64 flex flex-col h-screen relative bg-background">
+<!-- TopAppBar -->
+<header class="fixed top-0 right-0 w-[calc(100%-16rem)] z-40 bg-background/40 backdrop-blur-xl border-b border-outline-variant/30 flex justify-between items-center h-20 px-margin">
+<h2 class="font-headline-md text-headline-md font-bold text-primary">MAVIS Telemetry</h2>
+<div class="flex items-center gap-md">
+<!-- Trailing Icons -->
+<button class="text-on-surface-variant hover:text-primary transition-all duration-200">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="text-on-surface-variant hover:text-primary transition-all duration-200">
+<span class="material-symbols-outlined">help_outline</span>
+</button>
+</div>
+</header>
+<!-- Canvas Workspace -->
+<main class="flex-1 overflow-y-auto mt-20 p-margin bg-background">
+<!-- Page Header & Controls -->
+<div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-lg gap-md">
+<div>
+<h1 class="font-display-lg text-display-lg text-on-surface mb-xs">Log Kejadian</h1>
+<p class="text-on-surface-variant font-body-md text-body-md">Historical telemetry events and incident reports.</p>
+</div>
+<div class="flex items-center gap-sm w-full md:w-auto">
+<!-- Search -->
+<div class="relative glass-panel rounded-DEFAULT overflow-hidden flex-1 md:w-64">
+<span class="material-symbols-outlined absolute left-sm top-1/2 -translate-y-1/2 text-on-surface-variant text-[18px]">search</span>
+<input class="w-full bg-transparent border-none text-on-surface font-body-md text-body-md pl-xl py-sm focus:ring-1 focus:ring-secondary focus:outline-none placeholder-on-surface-variant/50" placeholder="Search events..." type="text">
+</div>
+<!-- Filters -->
+<div class="glass-panel rounded-DEFAULT px-sm py-sm flex items-center gap-xs cursor-pointer hover:border-secondary transition-colors">
+<span class="material-symbols-outlined text-[18px] text-on-surface-variant">filter_alt</span>
+<span class="font-label-sm text-label-sm text-on-surface">Severity: All</span>
+</div>
+<div class="glass-panel rounded-DEFAULT px-sm py-sm flex items-center gap-xs cursor-pointer hover:border-secondary transition-colors">
+<span class="material-symbols-outlined text-[18px] text-on-surface-variant">calendar_today</span>
+<span class="font-label-sm text-label-sm text-on-surface">Last 24h</span>
+</div>
+<!-- Export -->
+<button class="border border-secondary text-secondary hover:bg-secondary/10 px-md py-sm rounded-DEFAULT font-label-md text-label-md flex items-center gap-xs transition-colors">
+<span class="material-symbols-outlined text-[18px]">download</span>
+                    Export CSV
+                </button>
+</div>
+</div>
+<!-- Data Table Container -->
+<div class="glass-panel rounded-lg overflow-hidden flex flex-col h-[calc(100vh-240px)]">
+<!-- Table Header -->
+<div class="grid grid-cols-12 gap-sm px-lg py-md bg-surface-container-highest border-b border-surface-variant items-center">
+<div class="col-span-2 font-label-md text-label-md text-on-surface-variant">TIMESTAMP</div>
+<div class="col-span-3 font-label-md text-label-md text-on-surface-variant">EVENT TYPE</div>
+<div class="col-span-2 font-label-md text-label-md text-on-surface-variant">MEASURED VALUE</div>
+<div class="col-span-2 font-label-md text-label-md text-on-surface-variant">SEVERITY</div>
+<div class="col-span-2 font-label-md text-label-md text-on-surface-variant">COORDINATES</div>
+<div class="col-span-1 font-label-md text-label-md text-on-surface-variant text-right">ACTION</div>
+</div>
+<!-- Table Body (Scrollable) -->
+<div class="flex-1 overflow-y-auto">
+<!-- Row 1: Danger -->
+<div class="grid grid-cols-12 gap-sm px-lg py-md border-b border-surface-variant/50 items-center hover:bg-surface-variant/30 transition-colors">
+<div class="col-span-2 font-data-num text-label-md text-on-surface">14:32:05.120<br><span class="text-on-surface-variant text-label-sm">2023-10-24</span></div>
+<div class="col-span-3 font-body-md text-body-md text-on-surface flex items-center gap-sm">
+<span class="material-symbols-outlined text-error">warning</span>
+                        Hard Braking
+                    </div>
+<div class="col-span-2 font-data-num text-data-num text-on-surface">-1.2 G</div>
+<div class="col-span-2">
+<span class="inline-flex items-center gap-xs px-xs py-1 rounded bg-error/20 border border-error/50 text-error font-label-sm text-label-sm">
+<span class="w-2 h-2 rounded-full bg-error animate-pulse"></span> Danger
+                        </span>
+</div>
+<div class="col-span-2 font-data-num text-label-sm text-on-surface-variant">
+                        -6.2088, 106.8456
+                    </div>
+<div class="col-span-1 text-right">
+<button class="text-secondary hover:text-primary transition-colors p-xs rounded hover:bg-secondary/10" onclick="toggleMapModal()">
+<span class="material-symbols-outlined">map</span>
+</button>
+</div>
+</div>
+<!-- Row 2: Warning -->
+<div class="grid grid-cols-12 gap-sm px-lg py-md border-b border-surface-variant/50 items-center hover:bg-surface-variant/30 transition-colors">
+<div class="col-span-2 font-data-num text-label-md text-on-surface">14:15:22.045<br><span class="text-on-surface-variant text-label-sm">2023-10-24</span></div>
+<div class="col-span-3 font-body-md text-body-md text-on-surface flex items-center gap-sm">
+<span class="material-symbols-outlined text-[#F59E0B]">cycle</span>
+                        Extreme Lean Angle
+                    </div>
+<div class="col-span-2 font-data-num text-data-num text-on-surface">42° L</div>
+<div class="col-span-2">
+<span class="inline-flex items-center gap-xs px-xs py-1 rounded bg-[#F59E0B]/20 border border-[#F59E0B]/50 text-[#F59E0B] font-label-sm text-label-sm">
+<span class="w-2 h-2 rounded-full bg-[#F59E0B]"></span> Warning
+                        </span>
+</div>
+<div class="col-span-2 font-data-num text-label-sm text-on-surface-variant">
+                        -6.2112, 106.8421
+                    </div>
+<div class="col-span-1 text-right">
+<button class="text-secondary hover:text-primary transition-colors p-xs rounded hover:bg-secondary/10" onclick="toggleMapModal()">
+<span class="material-symbols-outlined">map</span>
+</button>
+</div>
+</div>
+<!-- Row 3: Safe -->
+<div class="grid grid-cols-12 gap-sm px-lg py-md border-b border-surface-variant/50 items-center hover:bg-surface-variant/30 transition-colors">
+<div class="col-span-2 font-data-num text-label-md text-on-surface">13:45:10.990<br><span class="text-on-surface-variant text-label-sm">2023-10-24</span></div>
+<div class="col-span-3 font-body-md text-body-md text-on-surface flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary">vibration</span>
+                        High Engine Vibration
+                    </div>
+<div class="col-span-2 font-data-num text-data-num text-on-surface">8.4 mm/s</div>
+<div class="col-span-2">
+<span class="inline-flex items-center gap-xs px-xs py-1 rounded bg-primary/20 border border-primary/50 text-primary font-label-sm text-label-sm">
+<span class="w-2 h-2 rounded-full bg-primary"></span> Safe
+                        </span>
+</div>
+<div class="col-span-2 font-data-num text-label-sm text-on-surface-variant">
+                        -6.2250, 106.8310
+                    </div>
+<div class="col-span-1 text-right">
+<button class="text-secondary hover:text-primary transition-colors p-xs rounded hover:bg-secondary/10" onclick="toggleMapModal()">
+<span class="material-symbols-outlined">map</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+<!-- Mini GPS Popup (Hidden by default) -->
+<div class="fixed inset-0 bg-background/80 backdrop-blur-sm z-[100] hidden flex items-center justify-center opacity-0 transition-opacity duration-300" id="map-modal">
+<div class="glass-panel p-md rounded-xl w-full max-w-2xl transform scale-95 transition-transform duration-300" id="map-modal-content">
+<div class="flex justify-between items-center mb-md">
+<h3 class="font-headline-md text-headline-md text-on-surface flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary">location_on</span>
+                Incident Location
+            </h3>
+<button class="text-on-surface-variant hover:text-error transition-colors" onclick="toggleMapModal()">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<div class="w-full h-64 bg-surface-container rounded border border-surface-variant relative overflow-hidden group">
+<div class="bg-cover bg-center w-full h-full absolute inset-0 opacity-80 group-hover:opacity-100 transition-opacity duration-500" data-alt="A highly detailed top-down view of a dark-mode GPS map interface showing a modern city grid in deep blues and slate grays, with bright neon emerald green routing lines and a pulsing red warning marker at a specific intersection. Technical readouts overlay the corners." data-location="Jakarta" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBIi1830eRW4FDtgeIzV2GdA0wJATtVHVAbse8V_haK_SiucYywzWjgUydbDP14BfMADJNJZ9aqJEtH4PVa9HNqR9cVKIaV8eawW96F0ZUsPEGSqRAdFitqyxDjeUoPkVS6YaKh---70cTGH_kvdge1lu9imZ_TbuBeD77azX_V8rqBcX03WQo5b7k4ziy7QqgBvovo53yec0Kbyf2HRfFZ1FI2l4dSgnRFFc6eClvBsZSbuxrSAVUC')"></div>
+<div class="absolute inset-0 border-[0.5px] border-primary/30 pointer-events-none"></div>
+<!-- Crosshair Overlay -->
+<div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+<div class="w-8 h-8 border border-error/50 rounded-full relative animate-ping opacity-50"></div>
+<div class="w-2 h-2 bg-error rounded-full absolute shadow-[0_0_10px_rgba(255,180,171,0.8)]"></div>
+</div>
+</div>
+<div class="mt-sm flex justify-between items-center">
+<div class="font-data-num text-label-sm text-secondary">LAT: -6.2088 | LNG: 106.8456</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest">Signal: STRONG</div>
+</div>
+</div>
+</div>
+<script>
+    function toggleMapModal() {
+        const modal = document.getElementById('map-modal');
+        const content = document.getElementById('map-modal-content');
+        
+        if (modal.classList.contains('hidden')) {
+            modal.classList.remove('hidden');
+            // Trigger reflow
+            void modal.offsetWidth;
+            modal.classList.remove('opacity-0');
+            modal.classList.add('opacity-100');
+            content.classList.remove('scale-95');
+            content.classList.add('scale-100');
+        } else {
+            modal.classList.remove('opacity-100');
+            modal.classList.add('opacity-0');
+            content.classList.remove('scale-100');
+            content.classList.add('scale-95');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 300);
+        }
+    }
+</script>
+
+
+<div id="snapdom-sandbox" data-snapdom-sandbox="true" aria-hidden="true" style="position: absolute; left: -9999px; top: -9999px; width: 0px; height: 0px; overflow: hidden;"></div></body></html>

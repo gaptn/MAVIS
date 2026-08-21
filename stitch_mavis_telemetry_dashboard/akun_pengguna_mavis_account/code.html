@@ -1,0 +1,396 @@
+<!DOCTYPE html><html class="dark" lang="en" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>MAVIS Telemetry - Akun Pengguna</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;family=JetBrains+Mono:wght@500;600&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary": "#282f49",
+                        "surface-bright": "#31394d",
+                        "surface-tint": "#4edea3",
+                        "on-primary-fixed": "#002113",
+                        "tertiary-fixed-dim": "#bec5e5",
+                        "background": "#0b1326",
+                        "on-primary": "#003824",
+                        "on-tertiary-fixed": "#131a33",
+                        "on-tertiary-fixed-variant": "#3e4660",
+                        "on-secondary": "#003640",
+                        "error": "#ffb4ab",
+                        "on-secondary-container": "#00424e",
+                        "tertiary": "#bec5e5",
+                        "on-error-container": "#ffdad6",
+                        "surface-container-highest": "#2d3449",
+                        "outline": "#86948a",
+                        "surface-container-high": "#222a3d",
+                        "on-primary-fixed-variant": "#005236",
+                        "primary-fixed": "#6ffbbe",
+                        "surface-variant": "#2d3449",
+                        "error-container": "#93000a",
+                        "primary-container": "#10b981",
+                        "secondary-container": "#03b5d3",
+                        "primary-fixed-dim": "#4edea3",
+                        "on-surface": "#dae2fd",
+                        "outline-variant": "#3c4a42",
+                        "secondary": "#4cd7f6",
+                        "on-primary-container": "#00422b",
+                        "tertiary-fixed": "#dbe1ff",
+                        "surface-container-lowest": "#060e20",
+                        "on-secondary-fixed": "#001f26",
+                        "inverse-surface": "#dae2fd",
+                        "on-secondary-fixed-variant": "#004e5c",
+                        "on-surface-variant": "#bbcabf",
+                        "on-tertiary-container": "#313852",
+                        "tertiary-container": "#9ba2c1",
+                        "surface-container": "#171f33",
+                        "secondary-fixed-dim": "#4cd7f6",
+                        "surface-dim": "#0b1326",
+                        "primary": "#4edea3",
+                        "on-error": "#690005",
+                        "secondary-fixed": "#acedff",
+                        "surface-container-low": "#131b2e",
+                        "inverse-on-surface": "#283044",
+                        "inverse-primary": "#006c49",
+                        "on-background": "#dae2fd",
+                        "surface": "#0b1326"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "gutter": "20px",
+                        "margin": "40px",
+                        "md": "24px",
+                        "sm": "16px",
+                        "xs": "8px",
+                        "base": "4px",
+                        "lg": "32px",
+                        "xl": "48px"
+                    },
+                    "fontFamily": {
+                        "label-md": ["JetBrains Mono"],
+                        "display-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "label-sm": ["JetBrains Mono"],
+                        "body-lg": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "data-num": ["JetBrains Mono"]
+                    },
+                    "fontSize": {
+                        "label-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "data-num": ["20px", { "lineHeight": "24px", "fontWeight": "600" }]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            background-color: #0b1326; /* background */
+            color: #dae2fd; /* on-background */
+        }
+        .glass-panel {
+            background-color: rgba(30, 41, 59, 0.4);
+            border: 1px solid #334155;
+            backdrop-filter: blur(12px);
+        }
+        .glow-border:hover {
+            border-color: rgba(16, 185, 129, 0.3); /* primary-container approx */
+            box-shadow: 0 0 10px rgba(16, 185, 129, 0.1);
+        }
+        .toggle-checkbox:checked {
+            right: 0;
+            border-color: #10b981;
+        }
+        .toggle-checkbox:checked + .toggle-label {
+            background-color: #10b981;
+        }
+    </style>
+</head>
+<body class="font-body-md text-body-md antialiased overflow-x-hidden min-h-screen">
+<!-- SideNavBar -->
+<nav class="h-screen w-64 fixed left-0 top-0 bg-background/40 backdrop-blur-xl border-r border-outline-variant/30 flex flex-col py-xl px-sm z-50">
+<div class="mb-12 px-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full overflow-hidden border border-outline-variant/50 shrink-0">
+
+</div>
+<div>
+<h1 class="font-headline-md text-headline-md font-bold text-primary">MAVIS-01</h1>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Connected</p>
+</div>
+</div>
+</div>
+<ul class="flex flex-col gap-2 flex-grow">
+<li class="">
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-variant/20 hover:text-primary transition-colors active:scale-95 duration-150" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-md text-label-md">Beranda</span>
+</a>
+</li>
+<li class="">
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-variant/20 hover:text-primary transition-colors active:scale-95 duration-150" href="#">
+<span class="material-symbols-outlined">history</span>
+<span class="font-label-md text-label-md">Log Kejadian</span>
+</a>
+</li>
+<li class="">
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-variant/20 hover:text-primary transition-colors active:scale-95 duration-150" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span class="font-label-md text-label-md">Analisis Data</span>
+</a>
+</li>
+<li class="">
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-variant/20 hover:text-primary transition-colors active:scale-95 duration-150" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-md text-label-md">Pengaturan Perangkat</span>
+</a>
+</li>
+
+</ul>
+<div class="mt-auto px-4">
+<button class="w-full bg-primary-container text-on-primary-fixed py-3 rounded-lg font-label-md text-label-md hover:bg-primary-fixed transition-colors flex items-center justify-center gap-2 shadow-lg shadow-primary-container/20">
+<span class="material-symbols-outlined">add</span>
+                New Analysis
+            </button>
+</div>
+</nav>
+<!-- TopAppBar -->
+<header class="fixed top-0 right-0 w-[calc(100%-16rem)] z-40 bg-background/40 backdrop-blur-xl border-b border-outline-variant/30 flex justify-between items-center h-20 px-margin transition-all duration-200">
+<div class="font-headline-md text-headline-md font-bold text-primary">
+            MAVIS Telemetry
+        </div>
+<div class="flex items-center gap-6">
+<div class="relative group cursor-pointer text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-0 right-0 w-2 h-2 bg-error rounded-full animate-pulse"></span>
+</div>
+<div class="cursor-pointer text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">help_outline</span>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="ml-64 pt-[100px] px-margin pb-margin min-h-screen">
+<div class="grid grid-cols-12 gap-gutter max-w-[1600px] mx-auto">
+<!-- Profile Overview (Left Column, spans 4) -->
+<div class="col-span-12 lg:col-span-4 flex flex-col gap-gutter">
+<!-- User Profile Card -->
+<div class="glass-panel rounded-xl p-md glow-border transition-all duration-300">
+<div class="flex flex-col items-center text-center">
+<div class="w-24 h-24 rounded-full overflow-hidden border-2 border-primary-container/30 mb-4 relative group">
+<img alt="User Avatar" class="w-full h-full object-cover" data-alt="A sharp, detailed portrait photo of a tech-savvy user in a dark, moody environment illuminated by subtle cyan and emerald neon accents. High-tech, minimalist aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCn9Nm3uz_OZ-gK6fI59cS6xT8qu_XrFoWJBASW2uzbO34E2HrEqVO17DYldq0pGbCFgIFeBGuL3VoHyGQuY9nBTUOArSTGKP4jHRNTfDMInwyRk79BgG7RhJTSLIr1mGvlvG1dlFA6YJ5zbKrsbREXLBJi6VZnjVFnYvlSJc4KQpvN8WrBMQLgZcnvBoCpTL1JZ33Jv8Ykh8h_UPFDLMu359X_7WtrLJB025T4kZzAhRUYhMzC3rMf">
+<div class="absolute inset-0 bg-background/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
+<span class="material-symbols-outlined text-primary">edit</span>
+</div>
+</div>
+<h2 class="font-headline-md text-headline-md text-on-surface mb-1">Rizky Pratama</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6">rizky.pratama@mavis-telemetry.id</p>
+<div class="w-full h-px bg-outline-variant/30 mb-6"></div>
+<div class="w-full grid grid-cols-2 gap-4 text-left">
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant mb-1 uppercase tracking-wider">Status</p>
+<p class="font-label-md text-label-md text-primary flex items-center gap-1">
+<span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span> Active
+                                </p>
+</div>
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant mb-1 uppercase tracking-wider">Member Since</p>
+<p class="font-label-md text-label-md text-on-surface">Oct 2023</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Linked Vehicle Card -->
+<div class="glass-panel rounded-xl p-md relative overflow-hidden group">
+<!-- Subtle background decoration -->
+<div class="absolute -right-10 -bottom-10 opacity-5 group-hover:opacity-10 transition-opacity duration-500">
+<span class="material-symbols-outlined text-[120px]">two_wheeler</span>
+</div>
+<h3 class="font-label-md text-label-md text-on-surface-variant uppercase tracking-widest mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-sm">directions_bike</span>
+                        Linked Vehicle
+                    </h3>
+<div class="mb-4">
+<h4 class="font-headline-md text-headline-md text-on-surface">Honda Vario 160</h4>
+<p class="font-label-sm text-label-sm text-secondary-container mt-1">ID: MVS-V160-X92A</p>
+</div>
+<div class="space-y-3">
+<div class="flex justify-between items-center border-b border-outline-variant/20 pb-2">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Engine</span>
+<span class="font-data-num text-data-num text-on-surface text-sm">156.9 cc</span>
+</div>
+<div class="flex justify-between items-center border-b border-outline-variant/20 pb-2">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Telemetry Unit</span>
+<span class="font-data-num text-data-num text-on-surface text-sm">V2.4 Active</span>
+</div>
+<div class="flex justify-between items-center pb-2">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Last Sync</span>
+<span class="font-data-num text-data-num text-on-surface text-sm">2 mins ago</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Settings Grid (Right Column, spans 8) -->
+<div class="col-span-12 lg:col-span-8 flex flex-col gap-gutter">
+<!-- Emergency Contacts -->
+<div class="glass-panel rounded-xl p-md">
+<div class="flex justify-between items-center mb-6">
+<h3 class="font-label-md text-label-md text-on-surface-variant uppercase tracking-widest flex items-center gap-2">
+<span class="material-symbols-outlined text-error text-sm">emergency</span>
+                            Emergency Contacts
+                        </h3>
+<button class="text-secondary hover:text-secondary-container transition-colors font-label-sm text-label-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">add</span> Add Contact
+                        </button>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-4 text-sm">
+                        These contacts will be automatically notified in the event of a detected collision or critical system failure.
+                    </p>
+<div class="space-y-3">
+<!-- Contact 1 -->
+<div class="flex items-center justify-between p-4 bg-surface-container-low rounded-lg border border-outline-variant/30 hover:border-outline-variant/60 transition-colors">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined">person</span>
+</div>
+<div>
+<h4 class="font-body-md text-body-md font-semibold text-on-surface">Budi Santoso</h4>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Primary • +62 812-3456-7890</p>
+</div>
+</div>
+<div class="flex gap-2">
+<button class="w-8 h-8 rounded-full flex items-center justify-center bg-surface-container hover:bg-surface-container-highest text-secondary transition-colors" title="Edit">
+<span class="material-symbols-outlined text-sm">edit</span>
+</button>
+<button class="w-8 h-8 rounded-full flex items-center justify-center bg-error/10 hover:bg-error/20 text-error transition-colors" title="Call">
+<span class="material-symbols-outlined text-sm">call</span>
+</button>
+</div>
+</div>
+<!-- Contact 2 -->
+<div class="flex items-center justify-between p-4 bg-surface-container-low rounded-lg border border-outline-variant/30 hover:border-outline-variant/60 transition-colors">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined">person</span>
+</div>
+<div>
+<h4 class="font-body-md text-body-md font-semibold text-on-surface">Siti Rahma</h4>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Secondary • +62 813-9876-5432</p>
+</div>
+</div>
+<div class="flex gap-2">
+<button class="w-8 h-8 rounded-full flex items-center justify-center bg-surface-container hover:bg-surface-container-highest text-secondary transition-colors" title="Edit">
+<span class="material-symbols-outlined text-sm">edit</span>
+</button>
+<button class="w-8 h-8 rounded-full flex items-center justify-center bg-error/10 hover:bg-error/20 text-error transition-colors" title="Call">
+<span class="material-symbols-outlined text-sm">call</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Notification Preferences -->
+<div class="glass-panel rounded-xl p-md">
+<h3 class="font-label-md text-label-md text-on-surface-variant uppercase tracking-widest mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-sm">tune</span>
+                        Notification Preferences
+                    </h3>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<!-- Critical Alerts -->
+<div class="space-y-4">
+<h4 class="font-body-md text-body-md text-error flex items-center gap-2 border-b border-outline-variant/30 pb-2">
+<span class="material-symbols-outlined text-sm">warning</span>
+                                Critical Alerts (Collision/Theft)
+                            </h4>
+<div class="flex items-center justify-between">
+<span class="font-body-md text-body-md text-on-surface">Push Notification (App)</span>
+<div class="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in">
+<input checked="" class="toggle-checkbox absolute block w-5 h-5 rounded-full bg-white border-4 appearance-none cursor-pointer border-primary-container z-10" id="toggle1" name="toggle" type="checkbox">
+<label class="toggle-label block overflow-hidden h-5 rounded-full bg-primary-container cursor-pointer" for="toggle1"></label>
+</div>
+</div>
+<div class="flex items-center justify-between">
+<span class="font-body-md text-body-md text-on-surface">SMS Alert</span>
+<div class="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in">
+<input checked="" class="toggle-checkbox absolute block w-5 h-5 rounded-full bg-white border-4 appearance-none cursor-pointer border-primary-container z-10" id="toggle2" name="toggle" type="checkbox">
+<label class="toggle-label block overflow-hidden h-5 rounded-full bg-primary-container cursor-pointer" for="toggle2"></label>
+</div>
+</div>
+</div>
+<!-- System Alerts -->
+<div class="space-y-4">
+<h4 class="font-body-md text-body-md text-on-surface flex items-center gap-2 border-b border-outline-variant/30 pb-2">
+<span class="material-symbols-outlined text-sm">info</span>
+                                System &amp; Maintenance
+                            </h4>
+<div class="flex items-center justify-between">
+<span class="font-body-md text-body-md text-on-surface">Push Notification (App)</span>
+<div class="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in">
+<input checked="" class="toggle-checkbox absolute block w-5 h-5 rounded-full bg-white border-4 appearance-none cursor-pointer border-primary-container z-10" id="toggle3" name="toggle" type="checkbox">
+<label class="toggle-label block overflow-hidden h-5 rounded-full bg-primary-container cursor-pointer" for="toggle3"></label>
+</div>
+</div>
+<div class="flex items-center justify-between">
+<span class="font-body-md text-body-md text-on-surface">Email Report</span>
+<div class="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in">
+<input class="toggle-checkbox absolute block w-5 h-5 rounded-full bg-surface-variant border-4 appearance-none cursor-pointer border-surface-variant z-10" id="toggle4" name="toggle" type="checkbox" style="border-color: rgb(45, 52, 73);">
+<label class="toggle-label block overflow-hidden h-5 rounded-full bg-surface-container-highest cursor-pointer" for="toggle4" style="background-color: rgb(45, 52, 73);"></label>
+</div>
+</div>
+</div>
+</div>
+<div class="mt-8 flex justify-end">
+<button class="bg-surface-container hover:bg-surface-container-highest text-secondary border border-secondary/30 px-6 py-2 rounded-lg font-label-md text-label-md transition-colors mr-3">
+                            Discard
+                        </button>
+<button class="bg-primary-container text-on-primary-fixed px-6 py-2 rounded-lg font-label-md text-label-md hover:bg-primary-fixed transition-colors shadow-lg shadow-primary-container/20">
+                            Save Changes
+                        </button>
+</div>
+</div>
+</div>
+</div>
+</main>
+<script>
+        // Simple toggle logic for the custom CSS switches if needed for broader compatibility, 
+        // though the CSS handles the basic visual state.
+        document.querySelectorAll('.toggle-checkbox').forEach(toggle => {
+            toggle.addEventListener('change', function() {
+                const label = this.nextElementSibling;
+                if(this.checked) {
+                    this.style.borderColor = '#10b981';
+                    label.style.backgroundColor = '#10b981';
+                    this.style.right = '0';
+                } else {
+                    this.style.borderColor = '#2d3449'; // surface-variant
+                    label.style.backgroundColor = '#2d3449'; // surface-variant
+                    this.style.right = 'auto';
+                }
+            });
+            // Initialize state
+            if(!toggle.checked) {
+                toggle.style.borderColor = '#2d3449';
+                toggle.nextElementSibling.style.backgroundColor = '#2d3449';
+            }
+        });
+    </script>
+
+
+</body></html>

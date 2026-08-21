@@ -1,0 +1,910 @@
+<!DOCTYPE html><html class="dark" lang="en" style=""><svg class="inline-defs-container" aria-hidden="true" style="position:absolute;width:0;height:0;overflow:hidden"></svg><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>MAVIS - Analisis Data</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;family=JetBrains+Mono:wght@500;600&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-tertiary": "#282f49",
+                      "surface-bright": "#31394d",
+                      "surface-tint": "#4edea3",
+                      "on-primary-fixed": "#002113",
+                      "tertiary-fixed-dim": "#bec5e5",
+                      "background": "#0b1326",
+                      "on-primary": "#003824",
+                      "on-tertiary-fixed": "#131a33",
+                      "on-tertiary-fixed-variant": "#3e4660",
+                      "on-secondary": "#003640",
+                      "error": "#ffb4ab",
+                      "on-secondary-container": "#00424e",
+                      "tertiary": "#bec5e5",
+                      "on-error-container": "#ffdad6",
+                      "surface-container-highest": "#2d3449",
+                      "outline": "#86948a",
+                      "surface-container-high": "#222a3d",
+                      "on-primary-fixed-variant": "#005236",
+                      "primary-fixed": "#6ffbbe",
+                      "surface-variant": "#2d3449",
+                      "error-container": "#93000a",
+                      "primary-container": "#10b981",
+                      "secondary-container": "#03b5d3",
+                      "primary-fixed-dim": "#4edea3",
+                      "on-surface": "#dae2fd",
+                      "outline-variant": "#3c4a42",
+                      "secondary": "#4cd7f6",
+                      "on-primary-container": "#00422b",
+                      "tertiary-fixed": "#dbe1ff",
+                      "surface-container-lowest": "#060e20",
+                      "on-secondary-fixed": "#001f26",
+                      "inverse-surface": "#dae2fd",
+                      "on-secondary-fixed-variant": "#004e5c",
+                      "on-surface-variant": "#bbcabf",
+                      "on-tertiary-container": "#313852",
+                      "tertiary-container": "#9ba2c1",
+                      "surface-container": "#171f33",
+                      "secondary-fixed-dim": "#4cd7f6",
+                      "surface-dim": "#0b1326",
+                      "primary": "#4edea3",
+                      "on-error": "#690005",
+                      "secondary-fixed": "#acedff",
+                      "surface-container-low": "#131b2e",
+                      "inverse-on-surface": "#283044",
+                      "inverse-primary": "#006c49",
+                      "on-background": "#dae2fd",
+                      "surface": "#0b1326"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "gutter": "20px",
+                      "margin": "40px",
+                      "md": "24px",
+                      "sm": "16px",
+                      "xs": "8px",
+                      "base": "4px",
+                      "lg": "32px",
+                      "xl": "48px"
+              },
+              "fontFamily": {
+                      "label-md": [
+                              "JetBrains Mono"
+                      ],
+                      "display-lg": [
+                              "Inter"
+                      ],
+                      "body-md": [
+                              "Inter"
+                      ],
+                      "headline-md": [
+                              "Inter"
+                      ],
+                      "label-sm": [
+                              "JetBrains Mono"
+                      ],
+                      "body-lg": [
+                              "Inter"
+                      ],
+                      "headline-lg": [
+                              "Inter"
+                      ],
+                      "data-num": [
+                              "JetBrains Mono"
+                      ]
+              },
+              "fontSize": {
+                      "label-md": [
+                              "14px",
+                              {
+                                      "lineHeight": "20px",
+                                      "letterSpacing": "0.05em",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "display-lg": [
+                              "48px",
+                              {
+                                      "lineHeight": "56px",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "body-md": [
+                              "16px",
+                              {
+                                      "lineHeight": "24px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "headline-md": [
+                              "24px",
+                              {
+                                      "lineHeight": "32px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "label-sm": [
+                              "12px",
+                              {
+                                      "lineHeight": "16px",
+                                      "letterSpacing": "0.05em",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "body-lg": [
+                              "18px",
+                              {
+                                      "lineHeight": "28px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "headline-lg": [
+                              "32px",
+                              {
+                                      "lineHeight": "40px",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "data-num": [
+                              "20px",
+                              {
+                                      "lineHeight": "24px",
+                                      "fontWeight": "600"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+      </script>
+</head>
+<body class="bg-background text-on-surface font-body-md antialiased overflow-x-hidden min-h-screen"><svg class="inline-defs-container" aria-hidden="true" style="position:absolute;width:0;height:0;overflow:hidden"></svg>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>MAVIS - Analisis Data</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;family=JetBrains+Mono:wght@500;600&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-tertiary": "#282f49",
+                      "surface-bright": "#31394d",
+                      "surface-tint": "#4edea3",
+                      "on-primary-fixed": "#002113",
+                      "tertiary-fixed-dim": "#bec5e5",
+                      "background": "#0b1326",
+                      "on-primary": "#003824",
+                      "on-tertiary-fixed": "#131a33",
+                      "on-tertiary-fixed-variant": "#3e4660",
+                      "on-secondary": "#003640",
+                      "error": "#ffb4ab",
+                      "on-secondary-container": "#00424e",
+                      "tertiary": "#bec5e5",
+                      "on-error-container": "#ffdad6",
+                      "surface-container-highest": "#2d3449",
+                      "outline": "#86948a",
+                      "surface-container-high": "#222a3d",
+                      "on-primary-fixed-variant": "#005236",
+                      "primary-fixed": "#6ffbbe",
+                      "surface-variant": "#2d3449",
+                      "error-container": "#93000a",
+                      "primary-container": "#10b981",
+                      "secondary-container": "#03b5d3",
+                      "primary-fixed-dim": "#4edea3",
+                      "on-surface": "#dae2fd",
+                      "outline-variant": "#3c4a42",
+                      "secondary": "#4cd7f6",
+                      "on-primary-container": "#00422b",
+                      "tertiary-fixed": "#dbe1ff",
+                      "surface-container-lowest": "#060e20",
+                      "on-secondary-fixed": "#001f26",
+                      "inverse-surface": "#dae2fd",
+                      "on-secondary-fixed-variant": "#004e5c",
+                      "on-surface-variant": "#bbcabf",
+                      "on-tertiary-container": "#313852",
+                      "tertiary-container": "#9ba2c1",
+                      "surface-container": "#171f33",
+                      "secondary-fixed-dim": "#4cd7f6",
+                      "surface-dim": "#0b1326",
+                      "primary": "#4edea3",
+                      "on-error": "#690005",
+                      "secondary-fixed": "#acedff",
+                      "surface-container-low": "#131b2e",
+                      "inverse-on-surface": "#283044",
+                      "inverse-primary": "#006c49",
+                      "on-background": "#dae2fd",
+                      "surface": "#0b1326"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "gutter": "20px",
+                      "margin": "40px",
+                      "md": "24px",
+                      "sm": "16px",
+                      "xs": "8px",
+                      "base": "4px",
+                      "lg": "32px",
+                      "xl": "48px"
+              },
+              "fontFamily": {
+                      "label-md": [
+                              "JetBrains Mono"
+                      ],
+                      "display-lg": [
+                              "Inter"
+                      ],
+                      "body-md": [
+                              "Inter"
+                      ],
+                      "headline-md": [
+                              "Inter"
+                      ],
+                      "label-sm": [
+                              "JetBrains Mono"
+                      ],
+                      "body-lg": [
+                              "Inter"
+                      ],
+                      "headline-lg": [
+                              "Inter"
+                      ],
+                      "data-num": [
+                              "JetBrains Mono"
+                      ]
+              },
+              "fontSize": {
+                      "label-md": [
+                              "14px",
+                              {
+                                      "lineHeight": "20px",
+                                      "letterSpacing": "0.05em",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "display-lg": [
+                              "48px",
+                              {
+                                      "lineHeight": "56px",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "body-md": [
+                              "16px",
+                              {
+                                      "lineHeight": "24px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "headline-md": [
+                              "24px",
+                              {
+                                      "lineHeight": "32px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "label-sm": [
+                              "12px",
+                              {
+                                      "lineHeight": "16px",
+                                      "letterSpacing": "0.05em",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "body-lg": [
+                              "18px",
+                              {
+                                      "lineHeight": "28px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "headline-lg": [
+                              "32px",
+                              {
+                                      "lineHeight": "40px",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "data-num": [
+                              "20px",
+                              {
+                                      "lineHeight": "24px",
+                                      "fontWeight": "600"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+      </script>
+
+<svg class="inline-defs-container" aria-hidden="true" style="position:absolute;width:0;height:0;overflow:hidden"></svg>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>MAVIS - Analisis Data</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;family=JetBrains+Mono:wght@500;600&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-tertiary": "#282f49",
+                      "surface-bright": "#31394d",
+                      "surface-tint": "#4edea3",
+                      "on-primary-fixed": "#002113",
+                      "tertiary-fixed-dim": "#bec5e5",
+                      "background": "#0b1326",
+                      "on-primary": "#003824",
+                      "on-tertiary-fixed": "#131a33",
+                      "on-tertiary-fixed-variant": "#3e4660",
+                      "on-secondary": "#003640",
+                      "error": "#ffb4ab",
+                      "on-secondary-container": "#00424e",
+                      "tertiary": "#bec5e5",
+                      "on-error-container": "#ffdad6",
+                      "surface-container-highest": "#2d3449",
+                      "outline": "#86948a",
+                      "surface-container-high": "#222a3d",
+                      "on-primary-fixed-variant": "#005236",
+                      "primary-fixed": "#6ffbbe",
+                      "surface-variant": "#2d3449",
+                      "error-container": "#93000a",
+                      "primary-container": "#10b981",
+                      "secondary-container": "#03b5d3",
+                      "primary-fixed-dim": "#4edea3",
+                      "on-surface": "#dae2fd",
+                      "outline-variant": "#3c4a42",
+                      "secondary": "#4cd7f6",
+                      "on-primary-container": "#00422b",
+                      "tertiary-fixed": "#dbe1ff",
+                      "surface-container-lowest": "#060e20",
+                      "on-secondary-fixed": "#001f26",
+                      "inverse-surface": "#dae2fd",
+                      "on-secondary-fixed-variant": "#004e5c",
+                      "on-surface-variant": "#bbcabf",
+                      "on-tertiary-container": "#313852",
+                      "tertiary-container": "#9ba2c1",
+                      "surface-container": "#171f33",
+                      "secondary-fixed-dim": "#4cd7f6",
+                      "surface-dim": "#0b1326",
+                      "primary": "#4edea3",
+                      "on-error": "#690005",
+                      "secondary-fixed": "#acedff",
+                      "surface-container-low": "#131b2e",
+                      "inverse-on-surface": "#283044",
+                      "inverse-primary": "#006c49",
+                      "on-background": "#dae2fd",
+                      "surface": "#0b1326"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "gutter": "20px",
+                      "margin": "40px",
+                      "md": "24px",
+                      "sm": "16px",
+                      "xs": "8px",
+                      "base": "4px",
+                      "lg": "32px",
+                      "xl": "48px"
+              },
+              "fontFamily": {
+                      "label-md": [
+                              "JetBrains Mono"
+                      ],
+                      "display-lg": [
+                              "Inter"
+                      ],
+                      "body-md": [
+                              "Inter"
+                      ],
+                      "headline-md": [
+                              "Inter"
+                      ],
+                      "label-sm": [
+                              "JetBrains Mono"
+                      ],
+                      "body-lg": [
+                              "Inter"
+                      ],
+                      "headline-lg": [
+                              "Inter"
+                      ],
+                      "data-num": [
+                              "JetBrains Mono"
+                      ]
+              },
+              "fontSize": {
+                      "label-md": [
+                              "14px",
+                              {
+                                      "lineHeight": "20px",
+                                      "letterSpacing": "0.05em",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "display-lg": [
+                              "48px",
+                              {
+                                      "lineHeight": "56px",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "body-md": [
+                              "16px",
+                              {
+                                      "lineHeight": "24px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "headline-md": [
+                              "24px",
+                              {
+                                      "lineHeight": "32px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "label-sm": [
+                              "12px",
+                              {
+                                      "lineHeight": "16px",
+                                      "letterSpacing": "0.05em",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "body-lg": [
+                              "18px",
+                              {
+                                      "lineHeight": "28px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "headline-lg": [
+                              "32px",
+                              {
+                                      "lineHeight": "40px",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "data-num": [
+                              "20px",
+                              {
+                                      "lineHeight": "24px",
+                                      "fontWeight": "600"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+      </script>
+
+<svg class="inline-defs-container" aria-hidden="true" style="position:absolute;width:0;height:0;overflow:hidden"></svg>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>MAVIS - Analisis Data</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;family=JetBrains+Mono:wght@500;600&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-tertiary": "#282f49",
+                      "surface-bright": "#31394d",
+                      "surface-tint": "#4edea3",
+                      "on-primary-fixed": "#002113",
+                      "tertiary-fixed-dim": "#bec5e5",
+                      "background": "#0b1326",
+                      "on-primary": "#003824",
+                      "on-tertiary-fixed": "#131a33",
+                      "on-tertiary-fixed-variant": "#3e4660",
+                      "on-secondary": "#003640",
+                      "error": "#ffb4ab",
+                      "on-secondary-container": "#00424e",
+                      "tertiary": "#bec5e5",
+                      "on-error-container": "#ffdad6",
+                      "surface-container-highest": "#2d3449",
+                      "outline": "#86948a",
+                      "surface-container-high": "#222a3d",
+                      "on-primary-fixed-variant": "#005236",
+                      "primary-fixed": "#6ffbbe",
+                      "surface-variant": "#2d3449",
+                      "error-container": "#93000a",
+                      "primary-container": "#10b981",
+                      "secondary-container": "#03b5d3",
+                      "primary-fixed-dim": "#4edea3",
+                      "on-surface": "#dae2fd",
+                      "outline-variant": "#3c4a42",
+                      "secondary": "#4cd7f6",
+                      "on-primary-container": "#00422b",
+                      "tertiary-fixed": "#dbe1ff",
+                      "surface-container-lowest": "#060e20",
+                      "on-secondary-fixed": "#001f26",
+                      "inverse-surface": "#dae2fd",
+                      "on-secondary-fixed-variant": "#004e5c",
+                      "on-surface-variant": "#bbcabf",
+                      "on-tertiary-container": "#313852",
+                      "tertiary-container": "#9ba2c1",
+                      "surface-container": "#171f33",
+                      "secondary-fixed-dim": "#4cd7f6",
+                      "surface-dim": "#0b1326",
+                      "primary": "#4edea3",
+                      "on-error": "#690005",
+                      "secondary-fixed": "#acedff",
+                      "surface-container-low": "#131b2e",
+                      "inverse-on-surface": "#283044",
+                      "inverse-primary": "#006c49",
+                      "on-background": "#dae2fd",
+                      "surface": "#0b1326"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "gutter": "20px",
+                      "margin": "40px",
+                      "md": "24px",
+                      "sm": "16px",
+                      "xs": "8px",
+                      "base": "4px",
+                      "lg": "32px",
+                      "xl": "48px"
+              },
+              "fontFamily": {
+                      "label-md": [
+                              "JetBrains Mono"
+                      ],
+                      "display-lg": [
+                              "Inter"
+                      ],
+                      "body-md": [
+                              "Inter"
+                      ],
+                      "headline-md": [
+                              "Inter"
+                      ],
+                      "label-sm": [
+                              "JetBrains Mono"
+                      ],
+                      "body-lg": [
+                              "Inter"
+                      ],
+                      "headline-lg": [
+                              "Inter"
+                      ],
+                      "data-num": [
+                              "JetBrains Mono"
+                      ]
+              },
+              "fontSize": {
+                      "label-md": [
+                              "14px",
+                              {
+                                      "lineHeight": "20px",
+                                      "letterSpacing": "0.05em",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "display-lg": [
+                              "48px",
+                              {
+                                      "lineHeight": "56px",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "body-md": [
+                              "16px",
+                              {
+                                      "lineHeight": "24px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "headline-md": [
+                              "24px",
+                              {
+                                      "lineHeight": "32px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "label-sm": [
+                              "12px",
+                              {
+                                      "lineHeight": "16px",
+                                      "letterSpacing": "0.05em",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "body-lg": [
+                              "18px",
+                              {
+                                      "lineHeight": "28px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "headline-lg": [
+                              "32px",
+                              {
+                                      "lineHeight": "40px",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "data-num": [
+                              "20px",
+                              {
+                                      "lineHeight": "24px",
+                                      "fontWeight": "600"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+      </script>
+
+
+<!-- TopAppBar -->
+<header class="bg-background/40 backdrop-blur-xl text-primary font-headline-md text-headline-md fixed top-0 right-0 w-[calc(100%-16rem)] z-40 border-b border-outline-variant/30 flat no shadows flex justify-between items-center h-20 px-margin ml-64 transition-all duration-200">
+<div>
+<span class="font-headline-md text-headline-md font-bold text-primary">MAVIS Telemetry</span>
+</div>
+<div class="flex items-center gap-md">
+<!-- Search Bar on_right -->
+<div class="relative hidden lg:block">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-sm">search</span>
+<input class="bg-[#0B132B] border border-[#334155] rounded focus:border-secondary focus:ring-1 focus:ring-secondary text-on-surface pl-10 pr-4 py-1.5 font-label-md text-label-md w-64 placeholder:text-on-surface-variant/50 transition-all outline-none" placeholder="Search data..." type="text">
+</div>
+<!-- Actions -->
+<button class="w-10 h-10 rounded-full flex items-center justify-center text-on-surface-variant hover:text-primary transition-colors active:scale-95 duration-150 relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-error rounded-full animate-pulse"></span>
+</button>
+<button class="w-10 h-10 rounded-full flex items-center justify-center text-on-surface-variant hover:text-primary transition-colors active:scale-95 duration-150">
+<span class="material-symbols-outlined">help_outline</span>
+</button>
+</div>
+</header>
+<!-- SideNavBar -->
+<nav class="bg-background/40 backdrop-blur-xl text-primary font-body-md text-body-md h-screen w-64 fixed left-0 top-0 border-r border-outline-variant/30 flat no shadows flex flex-col h-full py-xl px-sm z-50">
+<!-- Brand Header -->
+<div class="flex items-center gap-3 mb-xl px-3">
+<div class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center overflow-hidden border border-outline-variant/30">
+
+</div>
+<div>
+<h1 class="font-headline-md text-headline-md font-bold text-primary leading-tight">MAVIS-01</h1>
+<p class="font-label-sm text-label-sm text-primary-fixed-dim">Connected</p>
+</div>
+</div>
+<!-- Navigation Tabs -->
+<ul class="flex-1 space-y-2">
+<li class="">
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-variant/20 hover:text-primary transition-colors active:scale-95 duration-150" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="">Beranda</span>
+</a>
+</li>
+<li class="">
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-variant/20 hover:text-primary transition-colors active:scale-95 duration-150" href="#">
+<span class="material-symbols-outlined">history</span>
+<span class="">Log Kejadian</span>
+</a>
+</li>
+<li class="">
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-primary font-bold border-r-2 border-primary bg-primary/10 active:scale-95 duration-150" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">analytics</span>
+<span class="">Analisis Data</span>
+</a>
+</li>
+<li class="">
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-variant/20 hover:text-primary transition-colors active:scale-95 duration-150" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="">Pengaturan Perangkat</span>
+</a>
+</li>
+<li class="">
+
+</li>
+</ul>
+<!-- CTA -->
+<div class="mt-auto pt-lg">
+<button class="w-full bg-primary-container text-on-primary-container font-label-md text-label-md font-semibold py-3 px-4 rounded hover:bg-primary-fixed transition-colors active:scale-95 duration-150 flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-sm">add</span>
+                New Analysis
+            </button>
+</div>
+</nav>
+<!-- Main Content Area -->
+<main class="ml-64 pt-20 p-margin min-h-screen">
+<!-- Header & Filters -->
+<div class="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-lg gap-md">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface mb-1">Analisis Data</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Performance &amp; Safety Metrics Analysis</p>
+</div>
+<div class="flex flex-wrap items-center gap-sm">
+<!-- Session Selector -->
+<div class="relative bg-[#0B132B] border border-[#334155] rounded px-4 py-2 flex items-center gap-2 cursor-pointer hover:border-secondary transition-colors group">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-secondary text-sm">directions_bike</span>
+<span class="font-label-md text-label-md text-on-surface">Session #A-942</span>
+<span class="material-symbols-outlined text-on-surface-variant text-sm">expand_more</span>
+</div>
+<!-- Time Filter -->
+<div class="flex bg-[#0B132B] border border-[#334155] rounded p-1">
+<button class="px-3 py-1 rounded font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors">Today</button>
+<button class="px-3 py-1 rounded bg-surface-variant/50 font-label-md text-label-md text-primary font-semibold">Weekly</button>
+<button class="px-3 py-1 rounded font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors">Monthly</button>
+</div>
+</div>
+</div>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-12 gap-gutter">
+<!-- Left Column: Safety Score (4 cols) -->
+<div class="col-span-12 lg:col-span-4 bg-[#1E293B]/40 backdrop-blur-md border border-[#334155] rounded-xl p-md flex flex-col items-center justify-center min-h-[400px] relative overflow-hidden">
+<!-- Subtle background glow -->
+<div class="absolute inset-0 bg-primary/5 rounded-full blur-3xl -z-10 w-64 h-64 m-auto"></div>
+<h3 class="font-label-md text-label-md text-on-surface-variant self-start absolute top-md left-md">Riding Safety Score</h3>
+<span class="material-symbols-outlined absolute top-md right-md text-primary">verified_user</span>
+<!-- Large Donut Chart Representation -->
+<div class="relative w-48 h-48 mt-8 flex items-center justify-center">
+<svg class="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
+<!-- Background Circle -->
+<circle cx="50" cy="50" fill="transparent" r="40" stroke="#1E293B" stroke-width="8"></circle>
+<!-- Progress Circle -->
+<circle class="transition-all duration-1000 ease-out" cx="50" cy="50" fill="transparent" r="40" stroke="#10B981" stroke-dasharray="251.2" stroke-dashoffset="15.07" stroke-width="8"></circle>
+</svg>
+<div class="absolute flex flex-col items-center">
+<span class="font-display-lg text-display-lg text-primary">94</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">/ 100</span>
+</div>
+</div>
+<div class="mt-md text-center">
+<p class="font-body-md text-body-md text-on-surface">Excellent overall safety.</p>
+<p class="font-label-sm text-label-sm text-secondary mt-1 flex items-center justify-center gap-1">
+<span class="material-symbols-outlined text-[14px]">trending_up</span> +2% vs last week
+                    </p>
+</div>
+</div>
+<!-- Right Column: Charts (8 cols) -->
+<div class="col-span-12 lg:col-span-8 flex flex-col gap-gutter">
+<!-- Speed vs Roll Angle Correlation (Dual Axis) -->
+<div class="bg-[#1E293B]/40 backdrop-blur-md border border-[#334155] rounded-xl p-md flex-1 min-h-[250px] relative">
+<div class="flex justify-between items-center mb-4">
+<h3 class="font-label-md text-label-md text-on-surface-variant flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">speed</span>
+                            Speed vs Roll Angle
+                        </h3>
+<div class="flex gap-4">
+<div class="flex items-center gap-1">
+<span class="w-3 h-3 rounded-full bg-secondary"></span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Speed (km/h)</span>
+</div>
+<div class="flex items-center gap-1">
+<span class="w-3 h-3 rounded-full bg-primary"></span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Roll (deg)</span>
+</div>
+</div>
+</div>
+<!-- Faux Dual Axis Chart Area -->
+<div class="w-full h-[180px] relative mt-2 border-l border-b border-[#334155]">
+<!-- Y-Axis labels (Left - Speed) -->
+<div class="absolute -left-8 top-0 bottom-0 flex flex-col justify-between text-right font-label-sm text-label-sm text-on-surface-variant">
+<span class="">120</span>
+<span class="">80</span>
+<span class="">40</span>
+<span class="">0</span>
+</div>
+<!-- Y-Axis labels (Right - Roll) -->
+<div class="absolute -right-8 top-0 bottom-0 flex flex-col justify-between text-left font-label-sm text-label-sm text-on-surface-variant">
+<span class="">45</span>
+<span class="">30</span>
+<span class="">15</span>
+<span class="">0</span>
+</div>
+<!-- Grid Lines -->
+<div class="absolute inset-0 flex flex-col justify-between">
+<div class="w-full h-px bg-[#334155]/50"></div>
+<div class="w-full h-px bg-[#334155]/50"></div>
+<div class="w-full h-px bg-[#334155]/50"></div>
+<div class="w-full h-px bg-transparent"></div>
+</div>
+<!-- SVG Line paths -->
+<svg class="absolute inset-0 w-full h-full" preserveAspectRatio="none" viewBox="0 0 100 100">
+<!-- Speed Line (Secondary Color) -->
+<path d="M 0,80 L 10,75 L 20,60 L 30,55 L 40,30 L 50,25 L 60,40 L 70,50 L 80,45 L 90,60 L 100,70" fill="none" stroke="#4cd7f6" stroke-width="2" vector-effect="non-scaling-stroke"></path>
+<!-- Roll Angle Line (Primary Color) -->
+<path d="M 0,90 L 10,88 L 20,80 L 30,70 L 40,40 L 50,30 L 60,60 L 70,75 L 80,70 L 90,85 L 100,90" fill="none" stroke="#4edea3" stroke-dasharray="4" stroke-width="2" vector-effect="non-scaling-stroke"></path>
+</svg>
+</div>
+</div>
+<!-- Engine RMS Vibration Trend (Area Chart) -->
+<div class="bg-[#1E293B]/40 backdrop-blur-md border border-[#334155] rounded-xl p-md flex-1 min-h-[250px] relative">
+<div class="flex justify-between items-center mb-4">
+<h3 class="font-label-md text-label-md text-on-surface-variant flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">vibration</span>
+                            Engine RMS Vibration Trend
+                        </h3>
+<span class="font-data-num text-data-num text-on-surface">1.2<span class="text-label-sm text-on-surface-variant ml-1">mm/s</span></span>
+</div>
+<!-- Faux Area Chart -->
+<div class="w-full h-[180px] relative mt-2 border-l border-b border-[#334155]">
+<div class="absolute -left-8 top-0 bottom-0 flex flex-col justify-between text-right font-label-sm text-label-sm text-on-surface-variant">
+<span class="">2.5</span>
+<span class="">1.5</span>
+<span class="">0.5</span>
+</div>
+<svg class="absolute inset-0 w-full h-full" preserveAspectRatio="none" viewBox="0 0 100 100">
+<!-- Area Fill -->
+<path d="M 0,90 L 10,85 L 20,70 L 30,75 L 40,60 L 50,55 L 60,40 L 70,50 L 80,30 L 90,35 L 100,20 L 100,100 L 0,100 Z" fill="url(#areaGradient)" opacity="0.3"></path>
+<!-- Line -->
+<path d="M 0,90 L 10,85 L 20,70 L 30,75 L 40,60 L 50,55 L 60,40 L 70,50 L 80,30 L 90,35 L 100,20" fill="none" stroke="#ffb4ab" stroke-width="2" vector-effect="non-scaling-stroke"></path>
+<defs>
+<linearGradient id="areaGradient" x1="0" x2="0" y1="0" y2="1">
+<stop offset="0%" stop-color="#ffb4ab"></stop>
+<stop offset="100%" stop-color="transparent"></stop>
+</linearGradient>
+</defs>
+</svg>
+<!-- X-Axis labels -->
+<div class="absolute -bottom-6 left-0 right-0 flex justify-between font-label-sm text-label-sm text-on-surface-variant px-2">
+<span class="">Mon</span>
+<span class="">Wed</span>
+<span class="">Fri</span>
+<span class="">Sun</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+
+
+</body></html>

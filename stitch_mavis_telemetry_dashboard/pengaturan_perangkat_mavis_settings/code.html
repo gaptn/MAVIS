@@ -1,0 +1,346 @@
+<!DOCTYPE html><html class="dark" lang="en" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>MAVIS - Pengaturan Perangkat</title>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<!-- Tailwind CSS with Forms and Container Queries -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Configuration -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary": "#282f49",
+                        "surface-bright": "#31394d",
+                        "surface-tint": "#4edea3",
+                        "on-primary-fixed": "#002113",
+                        "tertiary-fixed-dim": "#bec5e5",
+                        "background": "#0b1326",
+                        "on-primary": "#003824",
+                        "on-tertiary-fixed": "#131a33",
+                        "on-tertiary-fixed-variant": "#3e4660",
+                        "on-secondary": "#003640",
+                        "error": "#ffb4ab",
+                        "on-secondary-container": "#00424e",
+                        "tertiary": "#bec5e5",
+                        "on-error-container": "#ffdad6",
+                        "surface-container-highest": "#2d3449",
+                        "outline": "#86948a",
+                        "surface-container-high": "#222a3d",
+                        "on-primary-fixed-variant": "#005236",
+                        "primary-fixed": "#6ffbbe",
+                        "surface-variant": "#2d3449",
+                        "error-container": "#93000a",
+                        "primary-container": "#10b981",
+                        "secondary-container": "#03b5d3",
+                        "primary-fixed-dim": "#4edea3",
+                        "on-surface": "#dae2fd",
+                        "outline-variant": "#3c4a42",
+                        "secondary": "#4cd7f6",
+                        "on-primary-container": "#00422b",
+                        "tertiary-fixed": "#dbe1ff",
+                        "surface-container-lowest": "#060e20",
+                        "on-secondary-fixed": "#001f26",
+                        "inverse-surface": "#dae2fd",
+                        "on-secondary-fixed-variant": "#004e5c",
+                        "on-surface-variant": "#bbcabf",
+                        "on-tertiary-container": "#313852",
+                        "tertiary-container": "#9ba2c1",
+                        "surface-container": "#171f33",
+                        "secondary-fixed-dim": "#4cd7f6",
+                        "surface-dim": "#0b1326",
+                        "primary": "#4edea3",
+                        "on-error": "#690005",
+                        "secondary-fixed": "#acedff",
+                        "surface-container-low": "#131b2e",
+                        "inverse-on-surface": "#283044",
+                        "inverse-primary": "#006c49",
+                        "on-background": "#dae2fd",
+                        "surface": "#0b1326"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "gutter": "20px",
+                        "margin": "40px",
+                        "md": "24px",
+                        "sm": "16px",
+                        "xs": "8px",
+                        "base": "4px",
+                        "lg": "32px",
+                        "xl": "48px"
+                    },
+                    "fontFamily": {
+                        "label-md": ["JetBrains Mono", "monospace"],
+                        "display-lg": ["Inter", "sans-serif"],
+                        "body-md": ["Inter", "sans-serif"],
+                        "headline-md": ["Inter", "sans-serif"],
+                        "label-sm": ["JetBrains Mono", "monospace"],
+                        "body-lg": ["Inter", "sans-serif"],
+                        "headline-lg": ["Inter", "sans-serif"],
+                        "data-num": ["JetBrains Mono", "monospace"]
+                    },
+                    "fontSize": {
+                        "label-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "data-num": ["20px", { "lineHeight": "24px", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        /* Custom scrollbar for technical feel */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0b1326; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #3c4a42; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #4edea3; 
+        }
+        
+        /* Custom Range Slider */
+        input[type=range] {
+            -webkit-appearance: none;
+            width: 100%;
+            background: transparent;
+        }
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 16px;
+            width: 8px;
+            border-radius: 2px;
+            background: #4edea3;
+            cursor: pointer;
+            margin-top: -6px;
+            box-shadow: 0 0 10px rgba(78, 222, 163, 0.5);
+        }
+        input[type=range]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 4px;
+            cursor: pointer;
+            background: #171f33;
+            border-radius: 2px;
+            border: 1px solid #3c4a42;
+        }
+        input[type=range]:focus {
+            outline: none;
+        }
+        input[type=range]:focus::-webkit-slider-runnable-track {
+            border-color: #4edea3;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md antialiased overflow-x-hidden min-h-screen">
+<!-- TopAppBar -->
+<header class="bg-background/40 backdrop-blur-xl border-b border-outline-variant/30 flat no shadows flex justify-between items-center h-20 px-margin ml-64 fixed top-0 right-0 w-[calc(100%-16rem)] z-40 transition-all duration-200">
+<div class="flex items-center gap-sm">
+<span class="font-headline-md text-headline-md font-bold text-primary">MAVIS Telemetry</span>
+</div>
+<div class="flex items-center gap-md">
+<!-- Search Bar: on_right logic (placeholder for actual search functionality) -->
+<div class="relative hidden lg:block">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[20px]" data-icon="search">search</span>
+<input class="bg-surface-container-low border border-outline-variant/50 rounded-full py-1.5 pl-10 pr-4 text-body-md text-on-surface focus:outline-none focus:border-secondary-container focus:ring-1 focus:ring-secondary-container transition-all w-64 placeholder:text-on-surface-variant/50" placeholder="Search..." type="text">
+</div>
+<!-- Trailing Icons -->
+<button class="text-on-surface-variant hover:text-primary transition-all duration-200 w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-variant/30">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="text-on-surface-variant hover:text-primary transition-all duration-200 w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-variant/30">
+<span class="material-symbols-outlined" data-icon="help_outline">help_outline</span>
+</button>
+</div>
+</header>
+<!-- SideNavBar -->
+<nav class="bg-background/40 backdrop-blur-xl border-r border-outline-variant/30 flat no shadows h-screen w-64 fixed left-0 top-0 flex flex-col h-full py-xl px-sm z-50">
+<!-- Header -->
+<div class="flex flex-col items-center mb-lg pt-sm">
+<div class="w-16 h-16 rounded-full bg-surface-container-highest border border-outline-variant/50 mb-sm flex items-center justify-center overflow-hidden">
+
+</div>
+<h2 class="font-headline-md text-headline-md font-bold text-primary text-center">MAVIS-01</h2>
+<span class="font-label-sm text-label-sm text-primary-container flex items-center gap-1 mt-1">
+<span class="w-2 h-2 rounded-full bg-primary-container animate-pulse"></span>
+                Connected
+            </span>
+</div>
+<!-- Navigation Tabs -->
+<div class="flex flex-col gap-1 flex-1 mt-md">
+<!-- Index 0 -->
+<a class="flex items-center gap-sm px-md py-3 rounded-lg text-on-surface-variant hover:bg-surface-variant/20 hover:text-primary transition-colors active:scale-95 duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-body-md text-body-md">Beranda</span>
+</a>
+<!-- Index 1 -->
+<a class="flex items-center gap-sm px-md py-3 rounded-lg text-on-surface-variant hover:bg-surface-variant/20 hover:text-primary transition-colors active:scale-95 duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="history">history</span>
+<span class="font-body-md text-body-md">Log Kejadian</span>
+</a>
+<!-- Index 2 -->
+<a class="flex items-center gap-sm px-md py-3 rounded-lg text-on-surface-variant hover:bg-surface-variant/20 hover:text-primary transition-colors active:scale-95 duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+<span class="font-body-md text-body-md">Analisis Data</span>
+</a>
+<!-- Index 3 - ACTIVE -->
+<a class="flex items-center gap-sm px-md py-3 rounded-lg text-primary font-bold border-r-2 border-primary bg-primary/10 transition-colors active:scale-95 duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-body-md text-body-md">Pengaturan Perangkat</span>
+</a>
+<!-- Index 4 -->
+
+</div>
+<!-- CTA -->
+<button class="mt-auto w-full py-3 bg-primary-container text-on-primary-fixed font-label-md text-label-md rounded-lg hover:bg-primary-fixed-dim transition-colors flex items-center justify-center gap-2 active:scale-95 duration-150">
+<span class="material-symbols-outlined text-[18px]" data-icon="add">add</span>
+            New Analysis
+        </button>
+</nav>
+<!-- Main Canvas -->
+<main class="ml-64 pt-24 px-margin pb-margin min-h-screen">
+<div class="mb-lg">
+<h1 class="font-headline-lg text-headline-lg text-on-surface">Pengaturan Perangkat</h1>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1">Configure hardware parameters, diagnostics, and operational thresholds.</p>
+</div>
+<!-- Layout Grid -->
+<div class="grid grid-cols-12 gap-gutter">
+<!-- Hardware Diagnostics Card (Spans 12 columns) -->
+<div class="col-span-12 bg-surface-container/40 backdrop-blur-md border border-outline-variant/50 rounded-xl p-md flex flex-col relative overflow-hidden">
+<!-- Subtle glow effect -->
+<div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary/20 to-transparent"></div>
+<h3 class="font-headline-md text-headline-md text-on-surface flex items-center gap-sm mb-md">
+<span class="material-symbols-outlined text-primary" data-icon="router">router</span>
+                    Hardware Diagnostics
+                </h3>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-sm">
+<!-- RSSI -->
+<div class="bg-surface-container-low border border-outline-variant/30 rounded-lg p-sm flex flex-col justify-between">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase mb-2">Signal Strength (RSSI)</span>
+<div class="flex items-end gap-1 h-8">
+<div class="w-2 h-2 bg-primary/40 rounded-sm"></div>
+<div class="w-2 h-4 bg-primary/60 rounded-sm"></div>
+<div class="w-2 h-6 bg-primary/80 rounded-sm"></div>
+<div class="w-2 h-8 bg-primary shadow-[0_0_8px_rgba(78,222,163,0.6)] rounded-sm"></div>
+<span class="font-data-num text-data-num text-primary ml-auto">-64 dBm</span>
+</div>
+</div>
+<!-- Battery -->
+<div class="bg-surface-container-low border border-outline-variant/30 rounded-lg p-sm flex flex-col justify-between">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase mb-2">Main Power (VCC)</span>
+<div class="flex items-center justify-between h-8">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary-container" data-icon="battery_charging_full">battery_charging_full</span>
+<div class="w-16 h-2 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-primary-container w-[85%]"></div>
+</div>
+</div>
+<span class="font-data-num text-data-num text-on-surface">12.6V</span>
+</div>
+</div>
+<!-- Subsystems Status -->
+<div class="col-span-1 md:col-span-2 bg-surface-container-low border border-outline-variant/30 rounded-lg p-sm grid grid-cols-3 gap-xs">
+<div class="flex flex-col items-center justify-center bg-surface-container/50 rounded p-2">
+<span class="w-3 h-3 rounded-full bg-primary mb-1 shadow-[0_0_6px_rgba(78,222,163,0.8)]"></span>
+<span class="font-label-sm text-label-sm text-on-surface text-center">BNO055</span>
+</div>
+<div class="flex flex-col items-center justify-center bg-surface-container/50 rounded p-2">
+<span class="w-3 h-3 rounded-full bg-primary mb-1 shadow-[0_0_6px_rgba(78,222,163,0.8)]"></span>
+<span class="font-label-sm text-label-sm text-on-surface text-center">NEO-M8N</span>
+</div>
+<div class="flex flex-col items-center justify-center bg-surface-container/50 rounded p-2">
+<span class="w-3 h-3 rounded-full bg-secondary-container mb-1 shadow-[0_0_6px_rgba(3,181,211,0.8)]"></span>
+<span class="font-label-sm text-label-sm text-on-surface text-center">SD Buffer</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Calibration Tools (Spans 6 columns) -->
+<div class="col-span-12 lg:col-span-6 bg-surface-container/40 backdrop-blur-md border border-outline-variant/50 rounded-xl p-md flex flex-col">
+<h3 class="font-headline-md text-headline-md text-on-surface flex items-center gap-sm mb-md">
+<span class="material-symbols-outlined text-secondary" data-icon="precision_manufacturing">precision_manufacturing</span>
+                    Calibration Tools
+                </h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-lg">Routine calibration required for optimal telemetry accuracy. Ensure vehicle is stationary before initiating.</p>
+<div class="flex flex-col gap-md mt-auto">
+<button class="w-full py-4 px-md border border-secondary text-secondary font-label-md text-label-md rounded-lg hover:bg-secondary/10 transition-colors flex items-center justify-between group active:scale-[0.98] duration-150">
+<span class="flex items-center gap-2">
+<span class="material-symbols-outlined group-hover:rotate-90 transition-transform duration-300" data-icon="sync">sync</span>
+                            Zero IMU Calibration
+                        </span>
+<span class="font-label-sm text-label-sm text-on-surface-variant group-hover:text-secondary transition-colors">Est. 5s</span>
+</button>
+<button class="w-full py-4 px-md border border-secondary text-secondary font-label-md text-label-md rounded-lg hover:bg-secondary/10 transition-colors flex items-center justify-between group active:scale-[0.98] duration-150">
+<span class="flex items-center gap-2">
+<span class="material-symbols-outlined group-hover:animate-pulse" data-icon="tune">tune</span>
+                            Set Engine Idle Baseline
+                        </span>
+<span class="font-label-sm text-label-sm text-on-surface-variant group-hover:text-secondary transition-colors">Est. 15s</span>
+</button>
+</div>
+</div>
+<!-- Threshold Sliders (Spans 6 columns) -->
+<div class="col-span-12 lg:col-span-6 bg-surface-container/40 backdrop-blur-md border border-outline-variant/50 rounded-xl p-md flex flex-col">
+<div class="flex items-center justify-between mb-md">
+<h3 class="font-headline-md text-headline-md text-on-surface flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary" data-icon="speed">speed</span>
+                        Operational Thresholds
+                    </h3>
+<button class="text-primary font-label-sm text-label-sm hover:underline">Reset Defaults</button>
+</div>
+<div class="flex flex-col gap-xl flex-1 justify-center">
+<!-- Vibration RMS Multiplier -->
+<div class="flex flex-col gap-2">
+<div class="flex justify-between items-end">
+<label class="font-label-md text-label-md text-on-surface">Vibration RMS Multiplier</label>
+<span class="font-data-num text-data-num text-primary" id="vib-val">0.45</span>
+</div>
+<input max="1.0" min="0.1" oninput="document.getElementById('vib-val').innerText = parseFloat(this.value).toFixed(2)" step="0.05" type="range" value="0.45">
+<div class="flex justify-between text-on-surface-variant font-label-sm text-label-sm">
+<span class="">0.1 (Strict)</span>
+<span class="">1.0 (Loose)</span>
+</div>
+</div>
+<!-- Max Safe Lean Angle -->
+<div class="flex flex-col gap-2">
+<div class="flex justify-between items-end">
+<label class="font-label-md text-label-md text-on-surface">Max Safe Lean Angle</label>
+<span class="font-data-num text-data-num text-primary" id="lean-val">42°</span>
+</div>
+<input max="60" min="0" oninput="document.getElementById('lean-val').innerText = this.value + '°'" step="1" type="range" value="42">
+<div class="flex justify-between text-on-surface-variant font-label-sm text-label-sm">
+<span class="">0° (Vertical)</span>
+<span class="">60° (Extreme)</span>
+</div>
+</div>
+</div>
+<div class="mt-lg flex justify-end">
+<button class="py-2 px-6 bg-primary-container text-on-primary-fixed font-label-md text-label-md rounded hover:bg-primary-fixed-dim transition-colors shadow-[0_0_15px_rgba(16,185,129,0.3)]">
+                        Apply Changes
+                    </button>
+</div>
+</div>
+</div>
+</main>
+
+
+</body></html>
