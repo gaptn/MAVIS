@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html class="dark" lang="id">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Akun Pengguna - MAVIS Telemetry</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap"
+        rel="stylesheet">
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "on-tertiary": "#282f49",
+                        "surface-bright": "#31394d",
+                        "surface-tint": "#4edea3",
+                        "on-primary-fixed": "#002113",
+                        "tertiary-fixed-dim": "#bec5e5",
+                        "background": "#0b1326",
+                        "on-primary": "#003824",
+                        "on-tertiary-fixed": "#131a33",
+                        "on-tertiary-fixed-variant": "#3e4660",
+                        "on-secondary": "#003640",
+                        "error": "#ffb4ab",
+                        "on-secondary-container": "#00424e",
+                        "tertiary": "#bec5e5",
+                        "on-error-container": "#ffdad6",
+                        "surface-container-highest": "#2d3449",
+                        "outline": "#86948a",
+                        "surface-container-high": "#222a3d",
+                        "on-primary-fixed-variant": "#005236",
+                        "primary-fixed": "#6ffbbe",
+                        "surface-variant": "#2d3449",
+                        "error-container": "#93000a",
+                        "primary-container": "#10b981",
+                        "secondary-container": "#03b5d3",
+                        "primary-fixed-dim": "#4edea3",
+                        "on-surface": "#dae2fd",
+                        "outline-variant": "#3c4a42",
+                        "secondary": "#4cd7f6",
+                        "on-primary-container": "#00422b",
+                        "tertiary-fixed": "#dbe1ff",
+                        "surface-container-lowest": "#060e20",
+                        "on-secondary-fixed": "#001f26",
+                        "inverse-surface": "#dae2fd",
+                        "on-secondary-fixed-variant": "#004e5c",
+                        "on-surface-variant": "#bbcabf",
+                        "on-tertiary-container": "#313852",
+                        "tertiary-container": "#9ba2c1",
+                        "surface-container": "#171f33",
+                        "secondary-fixed-dim": "#4cd7f6",
+                        "surface-dim": "#0b1326",
+                        "primary": "#4edea3",
+                        "on-error": "#690005",
+                        "secondary-fixed": "#acedff",
+                        "surface-container-low": "#131b2e",
+                        "inverse-on-surface": "#283044",
+                        "inverse-primary": "#006c49",
+                        "on-background": "#dae2fd",
+                        "surface": "#0b1326"
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    spacing: {
+                        "gutter": "20px",
+                        "margin": "32px",
+                        "md": "20px",
+                        "sm": "14px",
+                        "xs": "8px",
+                        "base": "4px",
+                        "lg": "28px",
+                        "xl": "40px"
+                    },
+                    fontFamily: {
+                        "label-md": ["JetBrains Mono", "monospace"],
+                        "display-lg": ["Inter", "sans-serif"],
+                        "body-md": ["Inter", "sans-serif"],
+                        "headline-md": ["Inter", "sans-serif"],
+                        "label-sm": ["JetBrains Mono", "monospace"],
+                        "body-lg": ["Inter", "sans-serif"],
+                        "headline-lg": ["Inter", "sans-serif"],
+                        "data-num": ["JetBrains Mono", "monospace"]
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0b1326;
+            color: #dae2fd;
+        }
+
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.4);
+            backdrop-filter: blur(12px);
+            border: 1px solid #334155;
+        }
+
+        .glow-border {
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            box-shadow: 0 0 15px rgba(16, 185, 129, 0.1);
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #0b1326;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #2d3449;
+            border-radius: 3px;
+        }
+
+        .toggle-checkbox:checked {
+            right: 0;
+            border-color: #10b981;
+        }
+
+        .toggle-checkbox:checked+.toggle-label {
+            background-color: #10b981;
+        }
+
+        /* Sidebar collapsed hover logo transformation */
+        #sidebar.is-collapsed #sidebar-logo-btn:hover #sidebar-logo-img,
+        html.sidebar-collapsed #sidebar-logo-btn:hover #sidebar-logo-img {
+            opacity: 0;
+        }
+
+        #sidebar.is-collapsed #sidebar-logo-btn:hover #sidebar-logo-hover-icon,
+        html.sidebar-collapsed #sidebar-logo-btn:hover #sidebar-logo-hover-icon {
+            opacity: 1;
+        }
+
+        /* Instant rendering for collapsed sidebar on page load/navigation */
+        html.sidebar-collapsed #sidebar {
+            width: 5rem !important;
+            padding-left: 0.5rem !important;
+            padding-right: 0.5rem !important;
+        }
+        html.sidebar-collapsed #main-content {
+            margin-left: 5rem !important;
+        }
+        html.sidebar-collapsed #top-header {
+            left: 5rem !important;
+        }
+        html.sidebar-collapsed .sidebar-text {
+            display: none !important;
+        }
+    </style>
+    <script>
+        if (localStorage.getItem('mavis-sidebar-collapsed') === 'true') {
+            document.documentElement.classList.add('sidebar-collapsed');
+        }
+    </script>
+</head>
+
+<body class="bg-background text-on-background min-h-screen flex antialiased overflow-x-hidden">
+
+    <!-- SideNavBar -->
+    <nav id="sidebar"
+        class="h-screen w-64 fixed left-0 top-0 border-r border-outline-variant/10 bg-background flex flex-col py-5 px-3 z-50 transition-all duration-300">
+        <div class="flex items-center justify-between h-12 mb-6 px-1 relative">
+            <button id="sidebar-logo-btn"
+                class="flex items-center gap-3 overflow-hidden rounded-xl p-1.5 hover:bg-surface-variant/20 transition-all group focus:outline-none cursor-pointer"
+                title="Toggle Sidebar">
+                <div class="w-9 h-9 flex items-center justify-center shrink-0 overflow-hidden relative">
+                    <img id="sidebar-logo-img" src="/assets/logo.png" alt="MAVIS Logo"
+                        class="w-full h-full object-contain p-0.5 transition-opacity duration-200">
+                    <span id="sidebar-logo-hover-icon"
+                        class="material-symbols-outlined text-2xl text-primary absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-200"
+                        data-icon="menu">menu</span>
+                </div>
+                <div class="sidebar-text truncate transition-opacity duration-200 text-left">
+                    <h1 class="font-headline-md text-lg font-bold text-primary truncate leading-none">MAVIS</h1>
+                    <p class="font-label-sm text-[11px] text-primary flex items-center gap-1 mt-1">
+                        <span class="w-2 h-2 rounded-full bg-primary animate-pulse inline-block"></span> Connected
+                    </p>
+                </div>
+            </button>
+            <button id="sidebar-toggle"
+                class="sidebar-text text-on-surface-variant hover:text-primary p-2 rounded-xl hover:bg-surface-variant/20 transition-colors focus:outline-none"
+                title="Toggle Sidebar">
+                <span class="material-symbols-outlined text-xl block" id="toggle-icon">menu_open</span>
+            </button>
+        </div>
+
+        <ul class="flex-1 space-y-1.5 overflow-y-auto">
+            <li>
+                <a href="/"
+                    class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-on-surface-variant hover:bg-surface-variant/20 hover:text-primary transition-all active:scale-95 duration-150"
+                    title="Beranda">
+                    <span class="material-symbols-outlined shrink-0" data-icon="dashboard">dashboard</span>
+                    <span class="sidebar-text font-body-md text-sm truncate">Beranda</span>
+                </a>
+            </li>
+            <li>
+                <a href="/history"
+                    class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-on-surface-variant hover:bg-surface-variant/20 hover:text-primary transition-all active:scale-95 duration-150"
+                    title="Log Kejadian">
+                    <span class="material-symbols-outlined shrink-0" data-icon="history">history</span>
+                    <span class="sidebar-text font-body-md text-sm truncate">Log Kejadian</span>
+                </a>
+            </li>
+            <li>
+                <a href="/analytics"
+                    class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-on-surface-variant hover:bg-surface-variant/20 hover:text-primary transition-all active:scale-95 duration-150"
+                    title="Analisis Data">
+                    <span class="material-symbols-outlined shrink-0" data-icon="analytics">analytics</span>
+                    <span class="sidebar-text font-body-md text-sm truncate">Analisis Data</span>
+                </a>
+            </li>
+            <li>
+                <a href="/terminal"
+                    class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-on-surface-variant hover:bg-surface-variant/20 hover:text-primary transition-all active:scale-95 duration-150"
+                    title="Terminal Live">
+                    <span class="material-symbols-outlined shrink-0" data-icon="terminal">terminal</span>
+                    <span class="sidebar-text font-body-md text-sm truncate">Terminal Live</span>
+                </a>
+            </li>
+            <li>
+                <a href="/settings"
+                    class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-on-surface-variant hover:bg-surface-variant/20 hover:text-primary transition-all active:scale-95 duration-150"
+                    title="Pengaturan Perangkat">
+                    <span class="material-symbols-outlined shrink-0" data-icon="settings">settings</span>
+                    <span class="sidebar-text font-body-md text-sm truncate">Pengaturan Perangkat</span>
+                </a>
+            </li>
+        </ul>
+
+        <div class="mt-auto pt-4 border-t border-outline-variant/10">
+            <a href="/analytics"
+                class="w-full bg-primary-container text-on-primary-container font-label-md text-xs font-semibold py-2.5 rounded-xl hover:bg-primary transition-all active:scale-95 flex items-center justify-center gap-2 shadow-md"
+                title="New Analysis">
+                <span class="material-symbols-outlined text-[18px]">add</span>
+                <span class="sidebar-text truncate">New Analysis</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- Main Canvas -->
+    <main id="main-content" class="flex-1 ml-64 min-h-screen flex flex-col transition-all duration-300">
+        <!-- TopAppBar -->
+        <header id="top-header"
+            class="fixed top-0 right-0 left-64 z-40 bg-background/80 backdrop-blur-xl border-b border-outline-variant/30 flex justify-between items-center h-20 px-8 transition-all duration-300">
+            <div class="font-headline-md text-xl font-bold text-primary">MAVIS Telemetry</div>
+            <div class="flex items-center gap-4">
+                <div class="relative">
+                    <button id="notification-btn" class="w-10 h-10 rounded-full flex items-center justify-center text-on-surface-variant hover:text-primary hover:bg-surface-variant/20 transition-colors relative" title="Notifikasi">
+                        <span class="material-symbols-outlined">notifications</span>
+                        <span id="notification-badge" class="absolute top-2.5 right-2.5 w-2 h-2 bg-error rounded-full animate-pulse"></span>
+                    </button>
+
+                    <!-- Notification Dropdown -->
+                    <div id="notification-dropdown" class="hidden absolute right-0 mt-2 w-80 sm:w-96 bg-surface-container-high/95 backdrop-blur-2xl border border-outline-variant/60 rounded-xl shadow-2xl py-3 z-50 transition-all duration-200">
+                        <div class="px-4 pb-2 border-b border-outline-variant/30 flex justify-between items-center">
+                            <h4 class="text-xs font-bold text-on-surface flex items-center gap-2">
+                                <span class="material-symbols-outlined text-primary text-base">notifications</span>
+                                Riwayat Notifikasi
+                            </h4>
+                            <span class="text-[10px] font-mono text-primary bg-primary/10 px-2 py-0.5 rounded-full font-semibold" id="notification-count">4 Alerts</span>
+                        </div>
+                        <div id="notification-list" class="max-h-80 overflow-y-auto divide-y divide-outline-variant/20 text-xs">
+                        </div>
+                    </div>
+                </div>
+                <button id="help-btn" class="w-10 h-10 rounded-full flex items-center justify-center text-on-surface-variant hover:text-primary hover:bg-surface-variant/20 transition-colors" title="Bantuan">
+                    <span class="material-symbols-outlined">help_outline</span>
+                </button>
+
+                <!-- Account Dropdown Menu (ACTIVE) -->
+                <div class="relative" id="account-dropdown-container">
+                    <button id="account-menu-button"
+                        class="flex items-center gap-2 p-1.5 pl-2 rounded-full bg-surface-container-high border-2 border-primary/60 hover:border-primary transition-all active:scale-95 focus:outline-none shadow-md">
+                        <div
+                            class="w-8 h-8 rounded-full overflow-hidden border border-primary/40 flex items-center justify-center bg-primary/20">
+                            <span class="material-symbols-outlined text-primary text-lg">person</span>
+                        </div>
+                        <span class="text-xs font-semibold text-primary hidden sm:inline-block pr-1 font-mono">Fulan
+                            (Active)</span>
+                        <span class="material-symbols-outlined text-primary text-sm pr-1">expand_more</span>
+                    </button>
+
+                    <!-- Dropdown Menu -->
+                    <div id="account-dropdown"
+                        class="hidden absolute right-0 mt-2 w-64 bg-surface-container-high/95 backdrop-blur-2xl border border-outline-variant/60 rounded-xl shadow-2xl py-2 z-50 transition-all duration-200">
+                        <div class="px-4 py-3 border-b border-outline-variant/30">
+                            <p class="text-sm font-bold text-on-surface">Fulan bin fulan</p>
+                            <p class="text-xs text-on-surface-variant truncate font-mono">fulanbinfulan@gmail.com</p>
+                        </div>
+                        <div class="py-1">
+                            <a href="/account"
+                                class="flex items-center gap-3 px-4 py-2 text-sm text-primary font-semibold bg-primary/10 transition-colors">
+                                <span class="material-symbols-outlined text-[18px]">account_circle</span>
+                                Akun Pengguna
+                            </a>
+                        </div>
+                        <div class="border-t border-outline-variant/30 pt-1">
+                            <a href="#"
+                                class="flex items-center gap-3 px-4 py-2 text-sm text-error hover:bg-error/10 transition-colors">
+                                <span class="material-symbols-outlined text-[18px]">logout</span>
+                                Keluar
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Content Workspace -->
+        <div class="flex-1 mt-20 p-6 space-y-6 overflow-y-auto">
+            <div class="grid grid-cols-12 gap-6 max-w-[1600px] mx-auto">
+                <!-- Profile Overview (Left Column, spans 4) -->
+                <div class="col-span-12 lg:col-span-4 flex flex-col gap-6">
+                    <!-- User Profile Card -->
+                    <div class="glass-panel rounded-xl p-5 glow-border transition-all duration-300">
+                        <div class="flex flex-col items-center text-center">
+                            <div
+                                class="w-20 h-20 rounded-full overflow-hidden border-2 border-primary-container/30 mb-3 relative group">
+                                <img alt="User Avatar" class="w-full h-full object-cover"
+                                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuCn9Nm3uz_OZ-gK6fI59cS6xT8qu_XrFoWJBASW2uzbO34E2HrEqVO17DYldq0pGbCFgIFeBGuL3VoHyGQuY9nBTUOArSTGKP4jHRNTfDMInwyRk79BgG7RhJTSLIr1mGvlvG1dlFA6YJ5zbKrsbREXLBJi6VZnjVFnYvlSJc4KQpvN8WrBMQLgZcnvBoCpTL1JZ33Jv8Ykh8h_UPFDLMu359X_7WtrLJB025T4kZzAhRUYhMzC3rMf">
+                                <div
+                                    class="absolute inset-0 bg-background/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
+                                    <span class="material-symbols-outlined text-primary text-lg">edit</span>
+                                </div>
+                            </div>
+                            <h2 class="font-headline-md text-lg font-bold text-on-surface mb-0.5">Fulan bin fulan</h2>
+                            <p class="font-body-md text-xs text-on-surface-variant mb-4 font-mono">
+                                fulanbinfulan@gmail.com</p>
+                            <div class="w-full h-px bg-outline-variant/30 mb-4"></div>
+                            <div class="w-full grid grid-cols-2 gap-3 text-left">
+                                <div>
+                                    <p
+                                        class="font-label-sm text-[10px] text-on-surface-variant mb-0.5 uppercase tracking-wider">
+                                        Status</p>
+                                    <p class="font-label-md text-xs text-primary font-semibold flex items-center gap-1">
+                                        <span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span> Active
+                                    </p>
+                                </div>
+                                <div>
+                                    <p
+                                        class="font-label-sm text-[10px] text-on-surface-variant mb-0.5 uppercase tracking-wider">
+                                        Member Since</p>
+                                    <p class="font-label-md text-xs text-on-surface font-semibold">Oct 2023</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Linked Vehicle Card -->
+                    <div class="glass-panel rounded-xl p-5 relative overflow-hidden group">
+                        <div
+                            class="absolute -right-6 -bottom-6 opacity-5 group-hover:opacity-10 transition-opacity duration-500">
+                            <span class="material-symbols-outlined text-[100px]">two_wheeler</span>
+                        </div>
+                        <h3
+                            class="font-label-md text-xs text-on-surface-variant uppercase tracking-widest mb-3 flex items-center gap-2 font-semibold">
+                            <span class="material-symbols-outlined text-secondary text-sm">directions_bike</span>
+                            Linked Vehicle
+                        </h3>
+                        <div class="mb-3">
+                            <h4 class="font-headline-md text-base font-bold text-on-surface">Honda Vario 160</h4>
+                            <p class="font-label-sm text-xs text-secondary-container mt-0.5 font-mono">ID: MVS-V160-X92A
+                            </p>
+                        </div>
+                        <div class="space-y-2 text-xs">
+                            <div class="flex justify-between items-center border-b border-outline-variant/20 pb-2">
+                                <span class="font-label-sm text-on-surface-variant">Engine</span>
+                                <span class="font-data-num text-on-surface">156.9 cc</span>
+                            </div>
+                            <div class="flex justify-between items-center border-b border-outline-variant/20 pb-2">
+                                <span class="font-label-sm text-on-surface-variant">Telemetry Unit</span>
+                                <span class="font-data-num text-primary">V2.4 Active</span>
+                            </div>
+                            <div class="flex justify-between items-center pb-1">
+                                <span class="font-label-sm text-on-surface-variant">Last Sync</span>
+                                <span class="font-data-num text-on-surface">2 mins ago</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Settings Grid (Right Column, spans 8) -->
+                <div class="col-span-12 lg:col-span-8 flex flex-col gap-6">
+                    <!-- Emergency Contacts -->
+                    <div class="glass-panel rounded-xl p-5">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3
+                                class="font-label-md text-xs text-on-surface-variant uppercase tracking-widest flex items-center gap-2 font-semibold">
+                                <span class="material-symbols-outlined text-error text-sm">emergency</span>
+                                Emergency Contacts
+                            </h3>
+                            <button
+                                class="text-secondary hover:text-secondary-container transition-colors font-label-sm text-xs flex items-center gap-1">
+                                <span class="material-symbols-outlined text-sm">add</span> Add Contact
+                            </button>
+                        </div>
+                        <p class="font-body-md text-xs text-on-surface-variant mb-4">
+                            These contacts will be automatically notified in the event of a detected collision or
+                            critical system failure.
+                        </p>
+                        <div class="space-y-2.5">
+                            <!-- Contact 1 -->
+                            <div
+                                class="flex items-center justify-between p-3 bg-surface-container-low rounded-lg border border-outline-variant/30 hover:border-outline-variant/60 transition-colors">
+                                <div class="flex items-center gap-3">
+                                    <div
+                                        class="w-9 h-9 rounded-full bg-surface-container-high flex items-center justify-center text-on-surface-variant">
+                                        <span class="material-symbols-outlined text-base">person</span>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-body-md text-xs font-semibold text-on-surface">Budi Santoso</h4>
+                                        <p class="font-label-sm text-[11px] text-on-surface-variant">Primary • +62
+                                            812-3456-7890</p>
+                                    </div>
+                                </div>
+                                <div class="flex gap-2">
+                                    <button
+                                        class="w-7 h-7 rounded-full flex items-center justify-center bg-surface-container hover:bg-surface-container-highest text-secondary transition-colors"
+                                        title="Edit">
+                                        <span class="material-symbols-outlined text-xs">edit</span>
+                                    </button>
+                                    <button
+                                        class="w-7 h-7 rounded-full flex items-center justify-center bg-error/10 hover:bg-error/20 text-error transition-colors"
+                                        title="Call">
+                                        <span class="material-symbols-outlined text-xs">call</span>
+                                    </button>
+                                </div>
+                            </div>
+                            <!-- Contact 2 -->
+                            <div
+                                class="flex items-center justify-between p-3 bg-surface-container-low rounded-lg border border-outline-variant/30 hover:border-outline-variant/60 transition-colors">
+                                <div class="flex items-center gap-3">
+                                    <div
+                                        class="w-9 h-9 rounded-full bg-surface-container-high flex items-center justify-center text-on-surface-variant">
+                                        <span class="material-symbols-outlined text-base">person</span>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-body-md text-xs font-semibold text-on-surface">Siti Rahma</h4>
+                                        <p class="font-label-sm text-[11px] text-on-surface-variant">Secondary • +62
+                                            813-9876-5432</p>
+                                    </div>
+                                </div>
+                                <div class="flex gap-2">
+                                    <button
+                                        class="w-7 h-7 rounded-full flex items-center justify-center bg-surface-container hover:bg-surface-container-highest text-secondary transition-colors"
+                                        title="Edit">
+                                        <span class="material-symbols-outlined text-xs">edit</span>
+                                    </button>
+                                    <button
+                                        class="w-7 h-7 rounded-full flex items-center justify-center bg-error/10 hover:bg-error/20 text-error transition-colors"
+                                        title="Call">
+                                        <span class="material-symbols-outlined text-xs">call</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Notification Preferences -->
+                    <div class="glass-panel rounded-xl p-5">
+                        <h3
+                            class="font-label-md text-xs text-on-surface-variant uppercase tracking-widest mb-4 flex items-center gap-2 font-semibold">
+                            <span class="material-symbols-outlined text-primary text-sm">tune</span>
+                            Notification Preferences
+                        </h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <!-- Critical Alerts -->
+                            <div class="space-y-3">
+                                <h4
+                                    class="font-body-md text-xs text-error flex items-center gap-1.5 border-b border-outline-variant/30 pb-1.5 font-semibold">
+                                    <span class="material-symbols-outlined text-sm">warning</span>
+                                    Critical Alerts (Collision/Theft)
+                                </h4>
+                                <div class="flex items-center justify-between text-xs">
+                                    <span class="font-body-md text-on-surface">Push Notification (App)</span>
+                                    <div
+                                        class="relative inline-block w-9 mr-1 align-middle select-none transition duration-200">
+                                        <input checked=""
+                                            class="toggle-checkbox absolute block w-4 h-4 rounded-full bg-white border-4 appearance-none cursor-pointer border-primary-container z-10"
+                                            id="toggle1" name="toggle" type="checkbox">
+                                        <label
+                                            class="toggle-label block overflow-hidden h-4 rounded-full bg-primary-container cursor-pointer"
+                                            for="toggle1"></label>
+                                    </div>
+                                </div>
+                                <div class="flex items-center justify-between text-xs">
+                                    <span class="font-body-md text-on-surface">SMS Alert</span>
+                                    <div
+                                        class="relative inline-block w-9 mr-1 align-middle select-none transition duration-200">
+                                        <input checked=""
+                                            class="toggle-checkbox absolute block w-4 h-4 rounded-full bg-white border-4 appearance-none cursor-pointer border-primary-container z-10"
+                                            id="toggle2" name="toggle" type="checkbox">
+                                        <label
+                                            class="toggle-label block overflow-hidden h-4 rounded-full bg-primary-container cursor-pointer"
+                                            for="toggle2"></label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- System Alerts -->
+                            <div class="space-y-3">
+                                <h4
+                                    class="font-body-md text-xs text-on-surface flex items-center gap-1.5 border-b border-outline-variant/30 pb-1.5 font-semibold">
+                                    <span class="material-symbols-outlined text-sm">info</span>
+                                    System &amp; Maintenance
+                                </h4>
+                                <div class="flex items-center justify-between text-xs">
+                                    <span class="font-body-md text-on-surface">Push Notification (App)</span>
+                                    <div
+                                        class="relative inline-block w-9 mr-1 align-middle select-none transition duration-200">
+                                        <input checked=""
+                                            class="toggle-checkbox absolute block w-4 h-4 rounded-full bg-white border-4 appearance-none cursor-pointer border-primary-container z-10"
+                                            id="toggle3" name="toggle" type="checkbox">
+                                        <label
+                                            class="toggle-label block overflow-hidden h-4 rounded-full bg-primary-container cursor-pointer"
+                                            for="toggle3"></label>
+                                    </div>
+                                </div>
+                                <div class="flex items-center justify-between text-xs">
+                                    <span class="font-body-md text-on-surface">Email Report</span>
+                                    <div
+                                        class="relative inline-block w-9 mr-1 align-middle select-none transition duration-200">
+                                        <input
+                                            class="toggle-checkbox absolute block w-4 h-4 rounded-full bg-surface-variant border-4 appearance-none cursor-pointer border-surface-variant z-10"
+                                            id="toggle4" name="toggle" type="checkbox"
+                                            style="border-color: rgb(45, 52, 73);">
+                                        <label
+                                            class="toggle-label block overflow-hidden h-4 rounded-full bg-surface-container-highest cursor-pointer"
+                                            for="toggle4" style="background-color: rgb(45, 52, 73);"></label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-6 flex justify-end gap-3">
+                            <button
+                                class="bg-surface-container hover:bg-surface-container-highest text-secondary border border-secondary/30 px-4 py-1.5 rounded-lg font-label-md text-xs transition-colors">
+                                Discard
+                            </button>
+                            <button
+                                class="bg-primary-container text-on-primary-container px-4 py-1.5 rounded-lg font-label-md text-xs font-semibold hover:bg-primary transition-colors shadow-md">
+                                Save Changes
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Toggle switch logic
+        document.querySelectorAll('.toggle-checkbox').forEach(toggle => {
+            toggle.addEventListener('change', function () {
+                const label = this.nextElementSibling;
+                if (this.checked) {
+                    this.style.borderColor = '#10b981';
+                    label.style.backgroundColor = '#10b981';
+                    this.style.right = '0';
+                } else {
+                    this.style.borderColor = '#2d3449';
+                    label.style.backgroundColor = '#2d3449';
+                    this.style.right = 'auto';
+                }
+            });
+            if (!toggle.checked) {
+                toggle.style.borderColor = '#2d3449';
+                toggle.nextElementSibling.style.backgroundColor = '#2d3449';
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.getElementById('main-content');
+            const topHeader = document.getElementById('top-header');
+            const sidebarToggle = document.getElementById('sidebar-toggle');
+            const sidebarLogoBtn = document.getElementById('sidebar-logo-btn');
+            const toggleIcon = document.getElementById('toggle-icon');
+            const sidebarTexts = document.querySelectorAll('.sidebar-text');
+
+            function setSidebarState(collapsed) {
+                if (collapsed) {
+                    document.documentElement.classList.add('sidebar-collapsed');
+                    sidebar.classList.remove('w-64');
+                    sidebar.classList.add('w-20', 'px-2', 'is-collapsed');
+                    if (mainContent) {
+                        mainContent.classList.remove('ml-64');
+                        mainContent.classList.add('ml-20');
+                    }
+                    if (topHeader) {
+                        topHeader.classList.remove('left-64');
+                        topHeader.classList.add('left-20');
+                    }
+                    sidebarTexts.forEach(el => el.classList.add('hidden'));
+                    if (toggleIcon) toggleIcon.textContent = 'menu';
+                    localStorage.setItem('mavis-sidebar-collapsed', 'true');
+                } else {
+                    document.documentElement.classList.remove('sidebar-collapsed');
+                    sidebar.classList.remove('w-20', 'px-2', 'is-collapsed');
+                    sidebar.classList.add('w-64');
+                    if (mainContent) {
+                        mainContent.classList.remove('ml-20');
+                        mainContent.classList.add('ml-64');
+                    }
+                    if (topHeader) {
+                        topHeader.classList.remove('left-20');
+                        topHeader.classList.add('left-64');
+                    }
+                    sidebarTexts.forEach(el => el.classList.remove('hidden'));
+                    if (toggleIcon) toggleIcon.textContent = 'menu_open';
+                    localStorage.setItem('mavis-sidebar-collapsed', 'false');
+                }
+            }
+
+            const isCollapsed = localStorage.getItem('mavis-sidebar-collapsed') === 'true' || document.documentElement.classList.contains('sidebar-collapsed');
+            if (isCollapsed) {
+                setSidebarState(true);
+            }
+
+            if (sidebarToggle) {
+                sidebarToggle.addEventListener('click', () => {
+                    const currentlyCollapsed = document.documentElement.classList.contains('sidebar-collapsed') || sidebar.classList.contains('w-20') || sidebar.classList.contains('is-collapsed');
+                    setSidebarState(!currentlyCollapsed);
+                });
+            }
+
+            if (sidebarLogoBtn) {
+                sidebarLogoBtn.addEventListener('click', () => {
+                    const currentlyCollapsed = document.documentElement.classList.contains('sidebar-collapsed') || sidebar.classList.contains('w-20') || sidebar.classList.contains('is-collapsed');
+                    setSidebarState(!currentlyCollapsed);
+                });
+            }
+
+            // Account Dropdown Toggle
+            const accountBtn = document.getElementById('account-menu-button');
+            const accountDropdown = document.getElementById('account-dropdown');
+
+            if (accountBtn && accountDropdown) {
+                accountBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    accountDropdown.classList.toggle('hidden');
+                });
+
+                document.addEventListener('click', (e) => {
+                    if (!accountDropdown.contains(e.target) && !accountBtn.contains(e.target)) {
+                        accountDropdown.classList.add('hidden');
+                    }
+                });
+            }
+        });
+    </script>
+<!-- Help Center Modal -->
+<div id="help-modal" class="hidden fixed inset-0 z-[100] bg-background/80 backdrop-blur-md flex items-center justify-center p-4 sm:p-6 transition-all duration-300">
+    <div class="bg-surface-container-high border border-outline-variant/60 rounded-2xl shadow-2xl w-full max-w-3xl max-h-[85vh] flex flex-col overflow-hidden">
+        <div class="px-6 py-4 border-b border-outline-variant/30 flex justify-between items-center bg-surface-container">
+            <div class="flex items-center gap-2 text-primary font-bold text-base sm:text-lg">
+                <span class="material-symbols-outlined">help_outline</span>
+                <span>Pusat Bantuan MAVIS</span>
+            </div>
+            <button id="help-modal-close" class="w-8 h-8 rounded-full flex items-center justify-center text-on-surface-variant hover:text-error hover:bg-error/10 transition-colors">
+                <span class="material-symbols-outlined text-xl">close</span>
+            </button>
+        </div>
+        <div id="help-modal-body" class="p-6 overflow-y-auto prose prose-invert max-w-none text-on-surface text-xs sm:text-sm leading-relaxed space-y-4 font-sans">
+            <div class="flex items-center justify-center py-12 text-on-surface-variant">
+                <span class="material-symbols-outlined animate-spin text-2xl mr-2">progress_activity</span>
+                Memuat dokumentasi bantuan...
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script src="/assets/dashboard-common.js"></script>
+</body>
+</html>

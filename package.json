@@ -1,0 +1,31 @@
+{
+  "name": "mavis-iot-bridge",
+  "version": "1.0.0",
+  "description": "Real-Time IoT Stream Processing Bridge for MAVIS",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node --watch index.js"
+  },
+  "dependencies": {
+    "@influxdata/influxdb-client": "^1.35.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "firebase-admin": "^12.1.0",
+    "mqtt": "^5.5.5",
+    "ws": "^8.16.0",
+    "zod": "^3.22.4"
+  },
+  "keywords": [
+    "iot",
+    "mqtt",
+    "influxdb",
+    "firestore",
+    "stream-processing",
+    "mavis"
+  ],
+  "author": "SIAP MAS Team",
+  "license": "ISC"
+}

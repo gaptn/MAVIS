@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html class="dark" lang="id">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Log Kejadian - MAVIS Telemetry</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "on-secondary-container": "#00424e",
+                        "inverse-on-surface": "#283044",
+                        "outline-variant": "#3c4a42",
+                        "background": "#0b1326",
+                        "on-secondary": "#003640",
+                        "surface-container-highest": "#2d3449",
+                        "primary-container": "#10b981",
+                        "surface-container-high": "#222a3d",
+                        "on-error-container": "#ffdad6",
+                        "secondary": "#4cd7f6",
+                        "on-tertiary-container": "#313852",
+                        "on-surface": "#dae2fd",
+                        "surface-dim": "#0b1326",
+                        "primary-fixed": "#6ffbbe",
+                        "on-primary-container": "#00422b",
+                        "tertiary-fixed-dim": "#bec5e5",
+                        "tertiary": "#bec5e5",
+                        "surface": "#0b1326",
+                        "surface-variant": "#2d3449",
+                        "on-error": "#690005",
+                        "error-container": "#93000a",
+                        "on-tertiary": "#282f49",
+                        "surface-tint": "#4edea3",
+                        "inverse-primary": "#006c49",
+                        "outline": "#86948a",
+                        "on-secondary-fixed": "#001f26",
+                        "error": "#ffb4ab",
+                        "secondary-container": "#03b5d3",
+                        "secondary-fixed": "#acedff",
+                        "inverse-surface": "#dae2fd",
+                        "on-secondary-fixed-variant": "#004e5c",
+                        "on-primary-fixed-variant": "#005236",
+                        "tertiary-fixed": "#dbe1ff",
+                        "primary": "#4edea3",
+                        "tertiary-container": "#9ba2c1",
+                        "surface-bright": "#31394d",
+                        "surface-container-low": "#131b2e",
+                        "secondary-fixed-dim": "#4cd7f6",
+                        "on-surface-variant": "#bbcabf",
+                        "primary-fixed-dim": "#4edea3",
+                        "on-primary-fixed": "#002113",
+                        "surface-container-lowest": "#060e20",
+                        "on-tertiary-fixed-variant": "#3e4660",
+                        "on-tertiary-fixed": "#131a33",
+                        "surface-container": "#171f33",
+                        "on-background": "#dae2fd",
+                        "on-primary": "#003824"
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    spacing: {
+                        "md": "20px",
+                        "gutter": "20px",
+                        "lg": "28px",
+                        "xl": "40px",
+                        "xs": "8px",
+                        "base": "4px",
+                        "margin": "32px",
+                        "sm": "14px"
+                    },
+                    fontFamily: {
+                        "label-md": ["JetBrains Mono", "monospace"],
+                        "label-sm": ["JetBrains Mono", "monospace"],
+                        "headline-lg": ["Inter", "sans-serif"],
+                        "headline-md": ["Inter", "sans-serif"],
+                        "body-lg": ["Inter", "sans-serif"],
+                        "body-md": ["Inter", "sans-serif"],
+                        "data-num": ["JetBrains Mono", "monospace"],
+                        "display-lg": ["Inter", "sans-serif"]
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #0b1326; color: #dae2fd; }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #0b1326; }
+        ::-webkit-scrollbar-thumb { background: #2d3449; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #86948a; }
+        .glass-panel {
+            background-color: rgba(30, 41, 59, 0.4);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(51, 65, 85, 0.6);
+        }
+
+        /* Sidebar collapsed hover logo transformation */
+        #sidebar.is-collapsed #sidebar-logo-btn:hover #sidebar-logo-img,
+        html.sidebar-collapsed #sidebar-logo-btn:hover #sidebar-logo-img {
+            opacity: 0;
+        }
+        #sidebar.is-collapsed #sidebar-logo-btn:hover #sidebar-logo-hover-icon,
+        html.sidebar-collapsed #sidebar-logo-btn:hover #sidebar-logo-hover-icon {
+            opacity: 1;
+        }
+
+        /* Instant rendering for collapsed sidebar on page load/navigation */
+        html.sidebar-collapsed #sidebar {
+            width: 5rem !important;
+            padding-left: 0.5rem !important;
+            padding-right: 0.5rem !important;
+        }
+        html.sidebar-collapsed #main-content {
+            margin-left: 5rem !important;
+        }
+        html.sidebar-collapsed #top-header {
+            left: 5rem !important;
+        }
+        html.sidebar-collapsed .sidebar-text {
+            display: none !important;
+        }
+    </style>
+    <script>
+        if (localStorage.getItem('mavis-sidebar-collapsed') === 'true') {
+            document.documentElement.classList.add('sidebar-collapsed');
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background min-h-screen flex antialiased overflow-x-hidden">
+
+<!-- SideNavBar -->
+<nav id="sidebar" class="h-screen w-64 fixed left-0 top-0 border-r border-outline-variant/10 bg-background flex flex-col py-5 px-3 z-50 transition-all duration-300">
+    <div class="flex items-center justify-between h-12 mb-6 px-1 relative">
+        <button id="sidebar-logo-btn" class="flex items-center gap-3 overflow-hidden rounded-xl p-1.5 hover:bg-surface-variant/20 transition-all group focus:outline-none cursor-pointer" title="Toggle Sidebar">
+            <div class="w-9 h-9 flex items-center justify-center shrink-0 overflow-hidden relative">
+                <img id="sidebar-logo-img" src="/assets/logo.png" alt="MAVIS Logo" class="w-full h-full object-contain p-0.5 transition-opacity duration-200">
+                <span id="sidebar-logo-hover-icon" class="material-symbols-outlined text-2xl text-primary absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-200" data-icon="menu">menu</span>
+            </div>
+            <div class="sidebar-text truncate transition-opacity duration-200 text-left">
+                <h1 class="font-headline-md text-lg font-bold text-primary truncate leading-none">MAVIS</h1>
+                <p class="font-label-sm text-[11px] text-primary flex items-center gap-1 mt-1">
+                    <span class="w-2 h-2 rounded-full bg-primary animate-pulse inline-block"></span> Connected
+                </p>
+            </div>
+        </button>
+        <button id="sidebar-toggle" class="sidebar-text text-on-surface-variant hover:text-primary p-2 rounded-xl hover:bg-surface-variant/20 transition-colors focus:outline-none" title="Toggle Sidebar">
+            <span class="material-symbols-outlined text-xl block" id="toggle-icon">menu_open</span>
+        </button>
+    </div>
+
+    <ul class="flex-1 space-y-1.5 overflow-y-auto">
+        <li>
+            <a href="/" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-on-surface-variant hover:bg-surface-variant/20 hover:text-primary transition-all active:scale-95 duration-150" title="Beranda">
+                <span class="material-symbols-outlined shrink-0" data-icon="dashboard">dashboard</span>
+                <span class="sidebar-text font-body-md text-sm truncate">Beranda</span>
+            </a>
+        </li>
+        <li>
+            <a href="/history" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-primary font-semibold bg-primary/15 transition-all" title="Log Kejadian">
+                <span class="material-symbols-outlined shrink-0" data-icon="history">history</span>
+                <span class="sidebar-text font-body-md text-sm truncate">Log Kejadian</span>
+            </a>
+        </li>
+        <li>
+            <a href="/analytics" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-on-surface-variant hover:bg-surface-variant/20 hover:text-primary transition-all active:scale-95 duration-150" title="Analisis Data">
+                <span class="material-symbols-outlined shrink-0" data-icon="analytics">analytics</span>
+                <span class="sidebar-text font-body-md text-sm truncate">Analisis Data</span>
+            </a>
+        </li>
+        <li>
+            <a href="/terminal" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-on-surface-variant hover:bg-surface-variant/20 hover:text-primary transition-all active:scale-95 duration-150" title="Terminal Live">
+                <span class="material-symbols-outlined shrink-0" data-icon="terminal">terminal</span>
+                <span class="sidebar-text font-body-md text-sm truncate">Terminal Live</span>
+            </a>
+        </li>
+        <li>
+            <a href="/settings" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-on-surface-variant hover:bg-surface-variant/20 hover:text-primary transition-all active:scale-95 duration-150" title="Pengaturan Perangkat">
+                <span class="material-symbols-outlined shrink-0" data-icon="settings">settings</span>
+                <span class="sidebar-text font-body-md text-sm truncate">Pengaturan Perangkat</span>
+            </a>
+        </li>
+    </ul>
+
+    <div class="mt-auto pt-4 border-t border-outline-variant/10">
+        <a href="/analytics" class="w-full bg-primary-container text-on-primary-container font-label-md text-xs font-semibold py-2.5 rounded-xl hover:bg-primary transition-all active:scale-95 flex items-center justify-center gap-2 shadow-md" title="New Analysis">
+            <span class="material-symbols-outlined text-[18px]">add</span>
+            <span class="sidebar-text truncate">New Analysis</span>
+        </a>
+    </div>
+</nav>
+
+<!-- Main Content Area -->
+<div id="main-content" class="flex-1 ml-64 flex flex-col h-screen relative bg-background transition-all duration-300">
+    <!-- TopAppBar -->
+    <header id="top-header" class="fixed top-0 right-0 left-64 z-40 bg-background/80 backdrop-blur-xl border-b border-outline-variant/30 flex justify-between items-center h-20 px-8 transition-all duration-300">
+        <div class="font-headline-md text-xl font-bold text-primary">MAVIS Telemetry</div>
+        <div class="flex items-center gap-4">
+            <div class="relative">
+                <button id="notification-btn" class="w-10 h-10 rounded-full flex items-center justify-center text-on-surface-variant hover:text-primary hover:bg-surface-variant/20 transition-colors relative" title="Notifikasi">
+                    <span class="material-symbols-outlined">notifications</span>
+                    <span id="notification-badge" class="absolute top-2.5 right-2.5 w-2 h-2 bg-error rounded-full animate-pulse"></span>
+                </button>
+
+                <!-- Notification Dropdown -->
+                <div id="notification-dropdown" class="hidden absolute right-0 mt-2 w-80 sm:w-96 bg-surface-container-high/95 backdrop-blur-2xl border border-outline-variant/60 rounded-xl shadow-2xl py-3 z-50 transition-all duration-200">
+                    <div class="px-4 pb-2 border-b border-outline-variant/30 flex justify-between items-center">
+                        <h4 class="text-xs font-bold text-on-surface flex items-center gap-2">
+                            <span class="material-symbols-outlined text-primary text-base">notifications</span>
+                            Riwayat Notifikasi
+                        </h4>
+                        <span class="text-[10px] font-mono text-primary bg-primary/10 px-2 py-0.5 rounded-full font-semibold" id="notification-count">4 Alerts</span>
+                    </div>
+                    <div id="notification-list" class="max-h-80 overflow-y-auto divide-y divide-outline-variant/20 text-xs">
+                    </div>
+                </div>
+            </div>
+            <button id="help-btn" class="w-10 h-10 rounded-full flex items-center justify-center text-on-surface-variant hover:text-primary hover:bg-surface-variant/20 transition-colors" title="Bantuan">
+                <span class="material-symbols-outlined">help_outline</span>
+            </button>
+
+            <!-- Account Dropdown Menu -->
+            <div class="relative" id="account-dropdown-container">
+                <button id="account-menu-button" class="flex items-center gap-2 p-1.5 pl-2 rounded-full bg-surface-container-high border border-outline-variant/50 hover:border-primary/50 transition-all active:scale-95 focus:outline-none">
+                    <div class="w-8 h-8 rounded-full overflow-hidden border border-primary/40 flex items-center justify-center bg-primary/10">
+                        <span class="material-symbols-outlined text-primary text-lg">person</span>
+                    </div>
+                    <span class="text-xs font-semibold text-on-surface hidden sm:inline-block pr-1 font-mono">Fulan</span>
+                    <span class="material-symbols-outlined text-on-surface-variant text-sm pr-1">expand_more</span>
+                </button>
+
+                <!-- Dropdown Menu -->
+                <div id="account-dropdown" class="hidden absolute right-0 mt-2 w-64 bg-surface-container-high/95 backdrop-blur-2xl border border-outline-variant/60 rounded-xl shadow-2xl py-2 z-50 transition-all duration-200">
+                    <div class="px-4 py-3 border-b border-outline-variant/30">
+                        <p class="text-sm font-bold text-on-surface">Fulan bin fulan</p>
+                        <p class="text-xs text-on-surface-variant truncate font-mono">Fulanbinfulan@gmail.com</p>
+                    </div>
+                    <div class="py-1">
+                        <a href="/account" class="flex items-center gap-3 px-4 py-2 text-sm text-on-surface hover:bg-surface-variant/30 hover:text-primary transition-colors">
+                            <span class="material-symbols-outlined text-[18px]">account_circle</span>
+                            Akun Pengguna
+                        </a>
+                    </div>
+                    <div class="border-t border-outline-variant/30 pt-1">
+                        <a href="#" class="flex items-center gap-3 px-4 py-2 text-sm text-error hover:bg-error/10 transition-colors">
+                            <span class="material-symbols-outlined text-[18px]">logout</span>
+                            Keluar
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Canvas Workspace -->
+    <main class="flex-1 overflow-y-auto mt-20 p-6 bg-background">
+        <!-- Page Header & Controls -->
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-6 gap-4">
+            <div>
+                <h1 class="font-display-lg text-2xl font-bold text-on-surface mb-1">Log Kejadian</h1>
+                <p class="text-on-surface-variant font-body-md text-xs">Historical telemetry events &amp; incident reports.</p>
+            </div>
+            <div class="flex flex-wrap items-center gap-3 w-full md:w-auto">
+                <!-- Search -->
+                <div class="relative glass-panel rounded-lg overflow-hidden flex-1 md:w-56">
+                    <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[18px]">search</span>
+                    <input id="history-search" class="w-full bg-transparent border-none text-on-surface font-body-md text-xs pl-10 py-2 focus:ring-1 focus:ring-secondary focus:outline-none placeholder-on-surface-variant/50" placeholder="Cari log kejadian..." type="text">
+                </div>
+                <!-- Dual Filters -->
+                <div class="glass-panel rounded-lg px-2.5 py-1.5 flex items-center gap-2 text-xs">
+                    <span class="material-symbols-outlined text-[18px] text-primary">filter_alt</span>
+                    <select id="filter-level" class="bg-transparent border-none text-on-surface text-xs font-semibold focus:outline-none cursor-pointer pr-4">
+                        <option value="alerts_only" class="bg-surface-container-high text-on-surface">Default: Waspada &amp; Bahaya</option>
+                        <option value="warning" class="bg-surface-container-high text-amber-400">Tingkat: Waspada (Warning)</option>
+                        <option value="danger" class="bg-surface-container-high text-error">Tingkat: Bahaya (Danger)</option>
+                        <option value="all" class="bg-surface-container-high text-on-surface-variant">Semua Level (Inc. Normal)</option>
+                    </select>
+                </div>
+                <div class="glass-panel rounded-lg px-2.5 py-1.5 flex items-center gap-2 text-xs">
+                    <span class="material-symbols-outlined text-[18px] text-secondary">category</span>
+                    <select id="filter-type" class="bg-transparent border-none text-on-surface text-xs font-semibold focus:outline-none cursor-pointer pr-4">
+                        <option value="all" class="bg-surface-container-high text-on-surface">Semua Jenis Peringatan</option>
+                        <option value="Sudut Kemiringan" class="bg-surface-container-high text-on-surface">Sudut Kemiringan</option>
+                        <option value="Overspeed" class="bg-surface-container-high text-on-surface">Overspeed</option>
+                        <option value="Getaran Extrem" class="bg-surface-container-high text-on-surface">Getaran Extrem</option>
+                        <option value="Rem Mendadak" class="bg-surface-container-high text-on-surface">Rem Mendadak</option>
+                    </select>
+                </div>
+                <!-- Export -->
+                <button id="export-csv-btn" class="border border-secondary text-secondary hover:bg-secondary/10 px-3.5 py-2 rounded-lg font-label-md text-xs flex items-center gap-1.5 transition-colors font-semibold shadow-md active:scale-95">
+                    <span class="material-symbols-outlined text-[18px]">download</span>
+                    Export CSV
+                </button>
+            </div>
+        </div>
+
+        <!-- Data Table Container -->
+        <div class="glass-panel rounded-xl overflow-hidden flex flex-col h-[calc(100vh-210px)]">
+            <!-- Table Header -->
+            <div class="grid grid-cols-12 gap-3 px-5 py-3 bg-surface-container-highest border-b border-surface-variant items-center text-xs font-semibold">
+                <div class="col-span-2 font-label-md text-on-surface-variant">TIMESTAMP</div>
+                <div class="col-span-3 font-label-md text-on-surface-variant">EVENT TYPE</div>
+                <div class="col-span-2 font-label-md text-on-surface-variant">MEASURED VALUE</div>
+                <div class="col-span-2 font-label-md text-on-surface-variant">SEVERITY</div>
+                <div class="col-span-2 font-label-md text-on-surface-variant">COORDINATES</div>
+                <div class="col-span-1 font-label-md text-on-surface-variant text-right">ACTION</div>
+            </div>
+            <!-- Table Body (Dynamic JS Rendering) -->
+            <div id="history-table-body" class="flex-1 overflow-y-auto divide-y divide-surface-variant/30">
+            </div>
+        </div>
+    </main>
+</div>
+
+<!-- Mini GPS Popup -->
+<div class="fixed inset-0 bg-background/80 backdrop-blur-sm z-[100] hidden flex items-center justify-center opacity-0 transition-opacity duration-300" id="map-modal">
+    <div class="glass-panel p-6 rounded-2xl w-full max-w-2xl transform scale-95 transition-transform duration-300 shadow-2xl" id="map-modal-content">
+        <div class="flex justify-between items-center mb-4">
+            <h3 class="font-headline-md text-lg font-bold text-on-surface flex items-center gap-2">
+                <span class="material-symbols-outlined text-primary">location_on</span>
+                Incident Location
+            </h3>
+            <button class="text-on-surface-variant hover:text-error transition-colors p-1" onclick="toggleMapModal()">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+        <div class="w-full h-64 bg-surface-container rounded-xl border border-surface-variant relative overflow-hidden group">
+            <div class="bg-cover bg-center w-full h-full absolute inset-0 opacity-80 group-hover:opacity-100 transition-opacity duration-500" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBIi1830eRW4FDtgeIzV2GdA0wJATtVHVAbse8V_haK_SiucYywzWjgUydbDP14BfMADJNJZ9aqJEtH4PVa9HNqR9cVKIaV8eawW96F0ZUsPEGSqRAdFitqyxDjeUoPkVS6YaKh---70cTGH_kvdge1lu9imZ_TbuBeD77azX_V8rqBcX03WQo5b7k4ziy7QqgBvovo53yec0Kbyf2HRfFZ1FI2l4dSgnRFFc6eClvBsZSbuxrSAVUC')"></div>
+            <div class="absolute inset-0 border-[0.5px] border-primary/30 pointer-events-none"></div>
+            <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+                <div class="w-8 h-8 border border-error/50 rounded-full relative animate-ping opacity-50"></div>
+                <div class="w-2.5 h-2.5 bg-error rounded-full absolute shadow-[0_0_10px_rgba(255,180,171,0.8)]"></div>
+            </div>
+        </div>
+        <div class="mt-3 flex justify-between items-center text-xs">
+            <div class="font-data-num text-secondary">LAT: -6.2088 | LNG: 106.8456</div>
+            <div class="font-label-sm text-on-surface-variant uppercase tracking-widest">Signal: STRONG</div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function toggleMapModal() {
+        const modal = document.getElementById('map-modal');
+        const content = document.getElementById('map-modal-content');
+        
+        if (modal.classList.contains('hidden')) {
+            modal.classList.remove('hidden');
+            void modal.offsetWidth;
+            modal.classList.remove('opacity-0');
+            modal.classList.add('opacity-100');
+            content.classList.remove('scale-95');
+            content.classList.add('scale-100');
+        } else {
+            modal.classList.remove('opacity-100');
+            modal.classList.add('opacity-0');
+            content.classList.remove('scale-100');
+            content.classList.add('scale-95');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 300);
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const sidebar = document.getElementById('sidebar');
+        const mainContent = document.getElementById('main-content');
+        const topHeader = document.getElementById('top-header');
+        const sidebarToggle = document.getElementById('sidebar-toggle');
+        const sidebarLogoBtn = document.getElementById('sidebar-logo-btn');
+        const toggleIcon = document.getElementById('toggle-icon');
+        const sidebarTexts = document.querySelectorAll('.sidebar-text');
+
+        function setSidebarState(collapsed) {
+            if (collapsed) {
+                document.documentElement.classList.add('sidebar-collapsed');
+                sidebar.classList.remove('w-64');
+                sidebar.classList.add('w-20', 'px-2', 'is-collapsed');
+                if (mainContent) {
+                    mainContent.classList.remove('ml-64');
+                    mainContent.classList.add('ml-20');
+                }
+                if (topHeader) {
+                    topHeader.classList.remove('left-64');
+                    topHeader.classList.add('left-20');
+                }
+                sidebarTexts.forEach(el => el.classList.add('hidden'));
+                if (toggleIcon) toggleIcon.textContent = 'menu';
+                localStorage.setItem('mavis-sidebar-collapsed', 'true');
+            } else {
+                document.documentElement.classList.remove('sidebar-collapsed');
+                sidebar.classList.remove('w-20', 'px-2', 'is-collapsed');
+                sidebar.classList.add('w-64');
+                if (mainContent) {
+                    mainContent.classList.remove('ml-20');
+                    mainContent.classList.add('ml-64');
+                }
+                if (topHeader) {
+                    topHeader.classList.remove('left-20');
+                    topHeader.classList.add('left-64');
+                }
+                sidebarTexts.forEach(el => el.classList.remove('hidden'));
+                if (toggleIcon) toggleIcon.textContent = 'menu_open';
+                localStorage.setItem('mavis-sidebar-collapsed', 'false');
+            }
+        }
+
+        const isCollapsed = localStorage.getItem('mavis-sidebar-collapsed') === 'true' || document.documentElement.classList.contains('sidebar-collapsed');
+        if (isCollapsed) {
+            setSidebarState(true);
+        }
+
+        if (sidebarToggle) {
+            sidebarToggle.addEventListener('click', () => {
+                const currentlyCollapsed = document.documentElement.classList.contains('sidebar-collapsed') || sidebar.classList.contains('w-20') || sidebar.classList.contains('is-collapsed');
+                setSidebarState(!currentlyCollapsed);
+            });
+        }
+
+        if (sidebarLogoBtn) {
+            sidebarLogoBtn.addEventListener('click', () => {
+                const currentlyCollapsed = document.documentElement.classList.contains('sidebar-collapsed') || sidebar.classList.contains('w-20') || sidebar.classList.contains('is-collapsed');
+                setSidebarState(!currentlyCollapsed);
+            });
+        }
+
+        // Account Dropdown Toggle
+        const accountBtn = document.getElementById('account-menu-button');
+        const accountDropdown = document.getElementById('account-dropdown');
+
+        if (accountBtn && accountDropdown) {
+            accountBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                accountDropdown.classList.toggle('hidden');
+            });
+
+            document.addEventListener('click', (e) => {
+                if (!accountDropdown.contains(e.target) && !accountBtn.contains(e.target)) {
+                    accountDropdown.classList.add('hidden');
+                }
+            });
+        }
+    });
+</script>
+<!-- Export CSV Option Modal -->
+<div id="export-modal" class="hidden fixed inset-0 bg-background/80 backdrop-blur-sm z-[100] flex items-center justify-center p-4">
+    <div class="glass-panel p-6 rounded-2xl w-full max-w-md shadow-2xl space-y-4">
+        <div class="flex justify-between items-center border-b border-outline-variant/30 pb-3">
+            <h3 class="font-headline-md text-base font-bold text-on-surface flex items-center gap-2">
+                <span class="material-symbols-outlined text-secondary">download</span>
+                Ekspor Data Telemetri (.CSV)
+            </h3>
+            <button id="export-modal-close" class="text-on-surface-variant hover:text-error transition-colors p-1">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+        <p class="text-xs text-on-surface-variant leading-relaxed">
+            Pilih opsi format ekspor data sesuai kebutuhan analisis Anda:
+        </p>
+        <div class="space-y-3 pt-1">
+            <button id="export-filtered-btn" class="w-full p-3 rounded-xl bg-surface-container-high hover:bg-surface-variant border border-outline-variant/40 hover:border-secondary transition-all text-left flex items-center justify-between group">
+                <div>
+                    <h4 class="text-xs font-bold text-on-surface group-hover:text-secondary">Export Data Terfilter</h4>
+                    <p class="text-[11px] text-on-surface-variant">Mengunduh baris data peringatan yang saat ini tampil di tabel.</p>
+                </div>
+                <span class="material-symbols-outlined text-secondary group-hover:translate-x-1 transition-transform">arrow_forward</span>
+            </button>
+            <button id="export-raw-btn" class="w-full p-3 rounded-xl bg-surface-container-high hover:bg-surface-variant border border-outline-variant/40 hover:border-primary transition-all text-left flex items-center justify-between group">
+                <div>
+                    <h4 class="text-xs font-bold text-on-surface group-hover:text-primary">Export Seluruh Data Mentah (Raw 1Hz)</h4>
+                    <p class="text-[11px] text-on-surface-variant">Mengunduh seluruh rekaman stream telemetri termasuk data normal.</p>
+                </div>
+                <span class="material-symbols-outlined text-primary group-hover:translate-x-1 transition-transform">arrow_forward</span>
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Help Center Modal -->
+<div id="help-modal" class="hidden fixed inset-0 z-[100] bg-background/80 backdrop-blur-md flex items-center justify-center p-4 sm:p-6 transition-all duration-300">
+    <div class="bg-surface-container-high border border-outline-variant/60 rounded-2xl shadow-2xl w-full max-w-3xl max-h-[85vh] flex flex-col overflow-hidden">
+        <div class="px-6 py-4 border-b border-outline-variant/30 flex justify-between items-center bg-surface-container">
+            <div class="flex items-center gap-2 text-primary font-bold text-base sm:text-lg">
+                <span class="material-symbols-outlined">help_outline</span>
+                <span>Pusat Bantuan MAVIS</span>
+            </div>
+            <button id="help-modal-close" class="w-8 h-8 rounded-full flex items-center justify-center text-on-surface-variant hover:text-error hover:bg-error/10 transition-colors">
+                <span class="material-symbols-outlined text-xl">close</span>
+            </button>
+        </div>
+        <div id="help-modal-body" class="p-6 overflow-y-auto prose prose-invert max-w-none text-on-surface text-xs sm:text-sm leading-relaxed space-y-4">
+            <div class="flex items-center justify-center py-12 text-on-surface-variant">
+                <span class="material-symbols-outlined animate-spin text-2xl mr-2">progress_activity</span>
+                Memuat dokumentasi bantuan...
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script src="/assets/dashboard-common.js"></script>
+<script src="/assets/history-table.js"></script>
+</body>
+</html>

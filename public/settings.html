@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html class="dark" lang="id">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Pengaturan Perangkat - MAVIS Telemetry</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "on-tertiary": "#282f49",
+                        "surface-bright": "#31394d",
+                        "surface-tint": "#4edea3",
+                        "on-primary-fixed": "#002113",
+                        "tertiary-fixed-dim": "#bec5e5",
+                        "background": "#0b1326",
+                        "on-primary": "#003824",
+                        "on-tertiary-fixed": "#131a33",
+                        "on-tertiary-fixed-variant": "#3e4660",
+                        "on-secondary": "#003640",
+                        "error": "#ffb4ab",
+                        "on-secondary-container": "#00424e",
+                        "tertiary": "#bec5e5",
+                        "on-error-container": "#ffdad6",
+                        "surface-container-highest": "#2d3449",
+                        "outline": "#86948a",
+                        "surface-container-high": "#222a3d",
+                        "on-primary-fixed-variant": "#005236",
+                        "primary-fixed": "#6ffbbe",
+                        "surface-variant": "#2d3449",
+                        "error-container": "#93000a",
+                        "primary-container": "#10b981",
+                        "secondary-container": "#03b5d3",
+                        "primary-fixed-dim": "#4edea3",
+                        "on-surface": "#dae2fd",
+                        "outline-variant": "#3c4a42",
+                        "secondary": "#4cd7f6",
+                        "on-primary-container": "#00422b",
+                        "tertiary-fixed": "#dbe1ff",
+                        "surface-container-lowest": "#060e20",
+                        "on-secondary-fixed": "#001f26",
+                        "inverse-surface": "#dae2fd",
+                        "on-secondary-fixed-variant": "#004e5c",
+                        "on-surface-variant": "#bbcabf",
+                        "on-tertiary-container": "#313852",
+                        "tertiary-container": "#9ba2c1",
+                        "surface-container": "#171f33",
+                        "secondary-fixed-dim": "#4cd7f6",
+                        "surface-dim": "#0b1326",
+                        "primary": "#4edea3",
+                        "on-error": "#690005",
+                        "secondary-fixed": "#acedff",
+                        "surface-container-low": "#131b2e",
+                        "inverse-on-surface": "#283044",
+                        "inverse-primary": "#006c49",
+                        "on-background": "#dae2fd",
+                        "surface": "#0b1326"
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    spacing: {
+                        "gutter": "20px",
+                        "margin": "32px",
+                        "md": "20px",
+                        "sm": "14px",
+                        "xs": "8px",
+                        "base": "4px",
+                        "lg": "28px",
+                        "xl": "40px"
+                    },
+                    fontFamily: {
+                        "label-md": ["JetBrains Mono", "monospace"],
+                        "display-lg": ["Inter", "sans-serif"],
+                        "body-md": ["Inter", "sans-serif"],
+                        "headline-md": ["Inter", "sans-serif"],
+                        "label-sm": ["JetBrains Mono", "monospace"],
+                        "body-lg": ["Inter", "sans-serif"],
+                        "headline-lg": ["Inter", "sans-serif"],
+                        "data-num": ["JetBrains Mono", "monospace"]
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #0b1326; color: #dae2fd; }
+        .glass-panel { background: rgba(30, 41, 59, 0.4); backdrop-filter: blur(12px); border: 1px solid #334155; }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #0b1326; }
+        ::-webkit-scrollbar-thumb { background: #2d3449; border-radius: 3px; }
+
+        /* Sidebar collapsed hover logo transformation */
+        #sidebar.is-collapsed #sidebar-logo-btn:hover #sidebar-logo-img,
+        html.sidebar-collapsed #sidebar-logo-btn:hover #sidebar-logo-img {
+            opacity: 0;
+        }
+        #sidebar.is-collapsed #sidebar-logo-btn:hover #sidebar-logo-hover-icon,
+        html.sidebar-collapsed #sidebar-logo-btn:hover #sidebar-logo-hover-icon {
+            opacity: 1;
+        }
+
+        /* Instant rendering for collapsed sidebar on page load/navigation */
+        html.sidebar-collapsed #sidebar {
+            width: 5rem !important;
+            padding-left: 0.5rem !important;
+            padding-right: 0.5rem !important;
+        }
+        html.sidebar-collapsed #main-content {
+            margin-left: 5rem !important;
+        }
+        html.sidebar-collapsed #top-header {
+            left: 5rem !important;
+        }
+        html.sidebar-collapsed .sidebar-text {
+            display: none !important;
+        }
+    </style>
+    <script>
+        if (localStorage.getItem('mavis-sidebar-collapsed') === 'true') {
+            document.documentElement.classList.add('sidebar-collapsed');
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background min-h-screen flex antialiased overflow-x-hidden">
+
+<!-- SideNavBar -->
+<nav id="sidebar" class="h-screen w-64 fixed left-0 top-0 border-r border-outline-variant/10 bg-background flex flex-col py-5 px-3 z-50 transition-all duration-300">
+    <div class="flex items-center justify-between h-12 mb-6 px-1 relative">
+        <button id="sidebar-logo-btn" class="flex items-center gap-3 overflow-hidden rounded-xl p-1.5 hover:bg-surface-variant/20 transition-all group focus:outline-none cursor-pointer" title="Toggle Sidebar">
+            <div class="w-9 h-9 flex items-center justify-center shrink-0 overflow-hidden relative">
+                <img id="sidebar-logo-img" src="/assets/logo.png" alt="MAVIS Logo" class="w-full h-full object-contain p-0.5 transition-opacity duration-200">
+                <span id="sidebar-logo-hover-icon" class="material-symbols-outlined text-2xl text-primary absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-200" data-icon="menu">menu</span>
+            </div>
+            <div class="sidebar-text truncate transition-opacity duration-200 text-left">
+                <h1 class="font-headline-md text-lg font-bold text-primary truncate leading-none">MAVIS</h1>
+                <p class="font-label-sm text-[11px] text-primary flex items-center gap-1 mt-1">
+                    <span class="w-2 h-2 rounded-full bg-primary animate-pulse inline-block"></span> Connected
+                </p>
+            </div>
+        </button>
+        <button id="sidebar-toggle" class="sidebar-text text-on-surface-variant hover:text-primary p-2 rounded-xl hover:bg-surface-variant/20 transition-colors focus:outline-none" title="Toggle Sidebar">
+            <span class="material-symbols-outlined text-xl block" id="toggle-icon">menu_open</span>
+        </button>
+    </div>
+
+    <ul class="flex-1 space-y-1.5 overflow-y-auto">
+        <li>
+            <a href="/" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-on-surface-variant hover:bg-surface-variant/20 hover:text-primary transition-all active:scale-95 duration-150" title="Beranda">
+                <span class="material-symbols-outlined shrink-0" data-icon="dashboard">dashboard</span>
+                <span class="sidebar-text font-body-md text-sm truncate">Beranda</span>
+            </a>
+        </li>
+        <li>
+            <a href="/history" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-on-surface-variant hover:bg-surface-variant/20 hover:text-primary transition-all active:scale-95 duration-150" title="Log Kejadian">
+                <span class="material-symbols-outlined shrink-0" data-icon="history">history</span>
+                <span class="sidebar-text font-body-md text-sm truncate">Log Kejadian</span>
+            </a>
+        </li>
+        <li>
+            <a href="/analytics" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-on-surface-variant hover:bg-surface-variant/20 hover:text-primary transition-all active:scale-95 duration-150" title="Analisis Data">
+                <span class="material-symbols-outlined shrink-0" data-icon="analytics">analytics</span>
+                <span class="sidebar-text font-body-md text-sm truncate">Analisis Data</span>
+            </a>
+        </li>
+        <li>
+            <a href="/terminal" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-on-surface-variant hover:bg-surface-variant/20 hover:text-primary transition-all active:scale-95 duration-150" title="Terminal Live">
+                <span class="material-symbols-outlined shrink-0" data-icon="terminal">terminal</span>
+                <span class="sidebar-text font-body-md text-sm truncate">Terminal Live</span>
+            </a>
+        </li>
+        <li>
+            <a href="/settings" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-primary font-semibold bg-primary/15 transition-all" title="Pengaturan Perangkat">
+                <span class="material-symbols-outlined shrink-0" data-icon="settings">settings</span>
+                <span class="sidebar-text font-body-md text-sm truncate">Pengaturan Perangkat</span>
+            </a>
+        </li>
+    </ul>
+
+    <div class="mt-auto pt-4 border-t border-outline-variant/10">
+        <a href="/analytics" class="w-full bg-primary-container text-on-primary-container font-label-md text-xs font-semibold py-2.5 rounded-xl hover:bg-primary transition-all active:scale-95 flex items-center justify-center gap-2 shadow-md" title="New Analysis">
+            <span class="material-symbols-outlined text-[18px]">add</span>
+            <span class="sidebar-text truncate">New Analysis</span>
+        </a>
+    </div>
+</nav>
+
+<!-- Main Canvas -->
+<main id="main-content" class="flex-1 ml-64 min-h-screen flex flex-col transition-all duration-300">
+    <!-- TopAppBar -->
+    <header id="top-header" class="fixed top-0 right-0 left-64 z-40 bg-background/80 backdrop-blur-xl border-b border-outline-variant/30 flex justify-between items-center h-20 px-8 transition-all duration-300">
+        <div class="font-headline-md text-xl font-bold text-primary">MAVIS Telemetry</div>
+        <div class="flex items-center gap-4">
+            <div class="relative hidden lg:block">
+                <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[20px]" data-icon="search">search</span>
+                <input class="bg-surface-container-high border border-outline-variant rounded-full py-1.5 pl-10 pr-4 text-sm text-on-surface focus:outline-none focus:border-secondary focus:ring-1 focus:ring-secondary w-60 transition-all placeholder:text-on-surface-variant/50" placeholder="Search parameters..." type="text">
+            </div>
+            <div class="relative">
+                <button id="notification-btn" class="w-10 h-10 rounded-full flex items-center justify-center text-on-surface-variant hover:text-primary hover:bg-surface-variant/20 transition-colors relative" title="Notifikasi">
+                    <span class="material-symbols-outlined">notifications</span>
+                    <span id="notification-badge" class="absolute top-2.5 right-2.5 w-2 h-2 bg-error rounded-full animate-pulse"></span>
+                </button>
+
+                <!-- Notification Dropdown -->
+                <div id="notification-dropdown" class="hidden absolute right-0 mt-2 w-80 sm:w-96 bg-surface-container-high/95 backdrop-blur-2xl border border-outline-variant/60 rounded-xl shadow-2xl py-3 z-50 transition-all duration-200">
+                    <div class="px-4 pb-2 border-b border-outline-variant/30 flex justify-between items-center">
+                        <h4 class="text-xs font-bold text-on-surface flex items-center gap-2">
+                            <span class="material-symbols-outlined text-primary text-base">notifications</span>
+                            Riwayat Notifikasi
+                        </h4>
+                        <span class="text-[10px] font-mono text-primary bg-primary/10 px-2 py-0.5 rounded-full font-semibold" id="notification-count">4 Alerts</span>
+                    </div>
+                    <div id="notification-list" class="max-h-80 overflow-y-auto divide-y divide-outline-variant/20 text-xs">
+                    </div>
+                </div>
+            </div>
+            <button id="help-btn" class="w-10 h-10 rounded-full flex items-center justify-center text-on-surface-variant hover:text-primary hover:bg-surface-variant/20 transition-colors" title="Bantuan">
+                <span class="material-symbols-outlined">help_outline</span>
+            </button>
+
+            <!-- Account Dropdown Menu -->
+            <div class="relative" id="account-dropdown-container">
+                <button id="account-menu-button" class="flex items-center gap-2 p-1.5 pl-2 rounded-full bg-surface-container-high border border-outline-variant/50 hover:border-primary/50 transition-all active:scale-95 focus:outline-none">
+                    <div class="w-8 h-8 rounded-full overflow-hidden border border-primary/40 flex items-center justify-center bg-primary/10">
+                        <span class="material-symbols-outlined text-primary text-lg">person</span>
+                    </div>
+                    <span class="text-xs font-semibold text-on-surface hidden sm:inline-block pr-1 font-mono">Fulan</span>
+                    <span class="material-symbols-outlined text-on-surface-variant text-sm pr-1">expand_more</span>
+                </button>
+
+                <!-- Dropdown Menu -->
+                <div id="account-dropdown" class="hidden absolute right-0 mt-2 w-64 bg-surface-container-high/95 backdrop-blur-2xl border border-outline-variant/60 rounded-xl shadow-2xl py-2 z-50 transition-all duration-200">
+                    <div class="px-4 py-3 border-b border-outline-variant/30">
+                        <p class="text-sm font-bold text-on-surface">Fulan bin fulan</p>
+                        <p class="text-xs text-on-surface-variant truncate font-mono">Fulanbinfulan@gmail.com</p>
+                    </div>
+                    <div class="py-1">
+                        <a href="/account" class="flex items-center gap-3 px-4 py-2 text-sm text-on-surface hover:bg-surface-variant/30 hover:text-primary transition-colors">
+                            <span class="material-symbols-outlined text-[18px]">account_circle</span>
+                            Akun Pengguna
+                        </a>
+                    </div>
+                    <div class="border-t border-outline-variant/30 pt-1">
+                        <a href="#" class="flex items-center gap-3 px-4 py-2 text-sm text-error hover:bg-error/10 transition-colors">
+                            <span class="material-symbols-outlined text-[18px]">logout</span>
+                            Keluar
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Content Workspace -->
+    <div class="flex-1 mt-20 p-6 space-y-6 overflow-y-auto">
+        <div class="mb-2">
+            <h1 class="font-headline-lg text-2xl font-bold text-on-surface">Pengaturan Perangkat</h1>
+            <p class="font-body-md text-xs text-on-surface-variant mt-1">Configure hardware parameters, diagnostics, and operational thresholds.</p>
+        </div>
+
+        <!-- Layout Grid -->
+        <div class="grid grid-cols-12 gap-6">
+            <!-- Hardware Diagnostics Card (Spans 12 columns) -->
+            <div class="col-span-12 glass-panel rounded-xl p-5 flex flex-col relative overflow-hidden">
+                <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary/20 to-transparent"></div>
+                <h3 class="font-headline-md text-sm font-semibold text-on-surface flex items-center gap-2 mb-4">
+                    <span class="material-symbols-outlined text-primary" data-icon="router">router</span>
+                    Hardware Diagnostics
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <!-- RSSI -->
+                    <div class="bg-surface-container-low border border-outline-variant/30 rounded-lg p-3 flex flex-col justify-between">
+                        <span class="font-label-sm text-xs text-on-surface-variant uppercase mb-2">Signal Strength (RSSI)</span>
+                        <div class="flex items-end gap-1 h-8">
+                            <div class="w-2 h-2 bg-primary/40 rounded-sm"></div>
+                            <div class="w-2 h-4 bg-primary/60 rounded-sm"></div>
+                            <div class="w-2 h-6 bg-primary/80 rounded-sm"></div>
+                            <div class="w-2 h-8 bg-primary shadow-[0_0_8px_rgba(78,222,163,0.6)] rounded-sm"></div>
+                            <span class="font-data-num text-sm font-bold text-primary ml-auto">-64 dBm</span>
+                        </div>
+                    </div>
+                    <!-- Battery -->
+                    <div class="bg-surface-container-low border border-outline-variant/30 rounded-lg p-3 flex flex-col justify-between">
+                        <span class="font-label-sm text-xs text-on-surface-variant uppercase mb-2">Main Power (VCC)</span>
+                        <div class="flex items-center justify-between h-8">
+                            <div class="flex items-center gap-2">
+                                <span class="material-symbols-outlined text-primary-container text-xl" data-icon="battery_charging_full">battery_charging_full</span>
+                                <div class="w-16 h-2 bg-surface-container-highest rounded-full overflow-hidden">
+                                    <div class="h-full bg-primary-container w-[85%]"></div>
+                                </div>
+                            </div>
+                            <span class="font-data-num text-sm font-bold text-on-surface">12.6V</span>
+                        </div>
+                    </div>
+                    <!-- Subsystems Status -->
+                    <div class="col-span-1 md:col-span-2 bg-surface-container-low border border-outline-variant/30 rounded-lg p-3 grid grid-cols-3 gap-2">
+                        <div class="flex flex-col items-center justify-center bg-surface-container/50 rounded p-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-primary mb-1 shadow-[0_0_6px_rgba(78,222,163,0.8)]"></span>
+                            <span class="font-label-sm text-xs text-on-surface text-center font-mono">BNO055</span>
+                        </div>
+                        <div class="flex flex-col items-center justify-center bg-surface-container/50 rounded p-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-primary mb-1 shadow-[0_0_6px_rgba(78,222,163,0.8)]"></span>
+                            <span class="font-label-sm text-xs text-on-surface text-center font-mono">NEO-M8N</span>
+                        </div>
+                        <div class="flex flex-col items-center justify-center bg-surface-container/50 rounded p-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-secondary-container mb-1 shadow-[0_0_6px_rgba(3,181,211,0.8)]"></span>
+                            <span class="font-label-sm text-xs text-on-surface text-center font-mono">SD Buffer</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Calibration Tools -->
+            <div class="col-span-12 lg:col-span-6 glass-panel rounded-xl p-5 flex flex-col">
+                <h3 class="font-headline-md text-sm font-semibold text-on-surface flex items-center gap-2 mb-2">
+                    <span class="material-symbols-outlined text-secondary" data-icon="precision_manufacturing">precision_manufacturing</span>
+                    Calibration Tools
+                </h3>
+                <p class="font-body-md text-xs text-on-surface-variant mb-4">Routine calibration required for optimal telemetry accuracy. Ensure vehicle is stationary before initiating.</p>
+                <div class="flex flex-col gap-3 mt-auto">
+                    <button class="w-full py-3 px-4 border border-secondary/50 text-secondary font-label-md text-xs rounded-lg hover:bg-secondary/10 transition-colors flex items-center justify-between group active:scale-[0.98] duration-150">
+                        <span class="flex items-center gap-2">
+                            <span class="material-symbols-outlined group-hover:rotate-90 transition-transform duration-300 text-sm" data-icon="sync">sync</span>
+                            Zero IMU Calibration
+                        </span>
+                        <span class="font-label-sm text-xs text-on-surface-variant group-hover:text-secondary transition-colors font-mono">Est. 5s</span>
+                    </button>
+                    <button class="w-full py-3 px-4 border border-secondary/50 text-secondary font-label-md text-xs rounded-lg hover:bg-secondary/10 transition-colors flex items-center justify-between group active:scale-[0.98] duration-150">
+                        <span class="flex items-center gap-2">
+                            <span class="material-symbols-outlined group-hover:animate-pulse text-sm" data-icon="tune">tune</span>
+                            Set Engine Idle Baseline
+                        </span>
+                        <span class="font-label-sm text-xs text-on-surface-variant group-hover:text-secondary transition-colors font-mono">Est. 15s</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Threshold Sliders -->
+            <div class="col-span-12 lg:col-span-6 glass-panel rounded-xl p-5 flex flex-col">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="font-headline-md text-sm font-semibold text-on-surface flex items-center gap-2">
+                        <span class="material-symbols-outlined text-primary" data-icon="speed">speed</span>
+                        Operational Thresholds
+                    </h3>
+                    <button class="text-primary font-label-sm text-xs hover:underline">Reset Defaults</button>
+                </div>
+                <div class="flex flex-col gap-4 flex-1 justify-center">
+                    <div class="flex flex-col gap-1.5">
+                        <div class="flex justify-between items-end">
+                            <label class="font-label-md text-xs text-on-surface">Vibration RMS Multiplier</label>
+                            <span class="font-data-num text-sm text-primary font-bold" id="vib-val">0.45</span>
+                        </div>
+                        <input id="input-vib" max="1.0" min="0.1" oninput="document.getElementById('vib-val').innerText = parseFloat(this.value).toFixed(2)" step="0.05" type="range" value="0.45" class="accent-primary">
+                        <div class="flex justify-between text-on-surface-variant font-label-sm text-[10px]">
+                            <span>0.1 (Strict)</span>
+                            <span>1.0 (Loose)</span>
+                        </div>
+                    </div>
+                    <div class="flex flex-col gap-1.5">
+                        <div class="flex justify-between items-end">
+                            <label class="font-label-md text-xs text-on-surface">Max Safe Lean Angle</label>
+                            <span class="font-data-num text-sm text-primary font-bold" id="lean-val">42°</span>
+                        </div>
+                        <input id="input-lean" max="60" min="0" oninput="document.getElementById('lean-val').innerText = this.value + '°'" step="1" type="range" value="42" class="accent-primary">
+                        <div class="flex justify-between text-on-surface-variant font-label-sm text-[10px]">
+                            <span>0° (Vertical)</span>
+                            <span>60° (Extreme)</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-4 flex justify-end items-center gap-3">
+                    <span id="settings-status-msg" class="text-xs font-mono hidden"></span>
+                    <button id="btn-apply-thresholds" class="py-2 px-4 bg-primary-container text-on-primary-container font-label-md text-xs font-semibold rounded-lg hover:bg-primary transition-colors shadow-md flex items-center gap-2">
+                        <span class="material-symbols-outlined text-sm">lock</span>
+                        Apply Changes
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const sidebar = document.getElementById('sidebar');
+        const mainContent = document.getElementById('main-content');
+        const topHeader = document.getElementById('top-header');
+        const sidebarToggle = document.getElementById('sidebar-toggle');
+        const sidebarLogoBtn = document.getElementById('sidebar-logo-btn');
+        const toggleIcon = document.getElementById('toggle-icon');
+        const sidebarTexts = document.querySelectorAll('.sidebar-text');
+
+        function setSidebarState(collapsed) {
+            if (collapsed) {
+                document.documentElement.classList.add('sidebar-collapsed');
+                sidebar.classList.remove('w-64');
+                sidebar.classList.add('w-20', 'px-2', 'is-collapsed');
+                if (mainContent) {
+                    mainContent.classList.remove('ml-64');
+                    mainContent.classList.add('ml-20');
+                }
+                if (topHeader) {
+                    topHeader.classList.remove('left-64');
+                    topHeader.classList.add('left-20');
+                }
+                sidebarTexts.forEach(el => el.classList.add('hidden'));
+                if (toggleIcon) toggleIcon.textContent = 'menu';
+                localStorage.setItem('mavis-sidebar-collapsed', 'true');
+            } else {
+                document.documentElement.classList.remove('sidebar-collapsed');
+                sidebar.classList.remove('w-20', 'px-2', 'is-collapsed');
+                sidebar.classList.add('w-64');
+                if (mainContent) {
+                    mainContent.classList.remove('ml-20');
+                    mainContent.classList.add('ml-64');
+                }
+                if (topHeader) {
+                    topHeader.classList.remove('left-20');
+                    topHeader.classList.add('left-64');
+                }
+                sidebarTexts.forEach(el => el.classList.remove('hidden'));
+                if (toggleIcon) toggleIcon.textContent = 'menu_open';
+                localStorage.setItem('mavis-sidebar-collapsed', 'false');
+            }
+        }
+
+        const isCollapsed = localStorage.getItem('mavis-sidebar-collapsed') === 'true' || document.documentElement.classList.contains('sidebar-collapsed');
+        if (isCollapsed) {
+            setSidebarState(true);
+        }
+
+        if (sidebarToggle) {
+            sidebarToggle.addEventListener('click', () => {
+                const currentlyCollapsed = document.documentElement.classList.contains('sidebar-collapsed') || sidebar.classList.contains('w-20') || sidebar.classList.contains('is-collapsed');
+                setSidebarState(!currentlyCollapsed);
+            });
+        }
+
+        if (sidebarLogoBtn) {
+            sidebarLogoBtn.addEventListener('click', () => {
+                const currentlyCollapsed = document.documentElement.classList.contains('sidebar-collapsed') || sidebar.classList.contains('w-20') || sidebar.classList.contains('is-collapsed');
+                setSidebarState(!currentlyCollapsed);
+            });
+        }
+
+        // Settings Thresholds API Integration
+        const btnApply = document.getElementById('btn-apply-thresholds');
+        const inputVib = document.getElementById('input-vib');
+        const inputLean = document.getElementById('input-lean');
+        const vibVal = document.getElementById('vib-val');
+        const leanVal = document.getElementById('lean-val');
+        const statusMsg = document.getElementById('settings-status-msg');
+
+        // Load existing settings on page load
+        fetch('/api/settings/thresholds')
+            .then(res => res.json())
+            .then(res => {
+                if (res.success && res.data) {
+                    if (res.data.vibration_rms_multiplier !== undefined) {
+                        inputVib.value = res.data.vibration_rms_multiplier;
+                        vibVal.innerText = parseFloat(res.data.vibration_rms_multiplier).toFixed(2);
+                    }
+                    if (res.data.max_safe_lean_angle !== undefined) {
+                        inputLean.value = res.data.max_safe_lean_angle;
+                        leanVal.innerText = res.data.max_safe_lean_angle + '°';
+                    }
+                }
+            })
+            .catch(() => console.log('Using default client thresholds'));
+
+        if (btnApply) {
+            btnApply.addEventListener('click', async () => {
+                const enteredPasscode = prompt('Masukkan Passcode Keamanan Perangkat untuk menerapkan perubahan:\n(Default: mavis-01-001-26)');
+                if (!enteredPasscode) return;
+
+                btnApply.disabled = true;
+                btnApply.innerHTML = '<span class="material-symbols-outlined animate-spin text-sm">progress_activity</span> Menyimpan...';
+                if (statusMsg) statusMsg.classList.add('hidden');
+
+                try {
+                    const response = await fetch('/api/settings/thresholds', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            passcode: enteredPasscode,
+                            vibration_rms_multiplier: parseFloat(inputVib.value),
+                            max_safe_lean_angle: parseFloat(inputLean.value),
+                        }),
+                    });
+
+                    const data = await response.json();
+
+                    if (response.ok && data.success) {
+                        if (statusMsg) {
+                            statusMsg.innerText = '✓ Berhasil disimpan';
+                            statusMsg.className = 'text-xs font-mono text-primary block';
+                        }
+                        alert('Berhasil: ' + data.message);
+                    } else {
+                        if (statusMsg) {
+                            statusMsg.innerText = '✗ Gagal: ' + (data.error || 'Akses ditolak');
+                            statusMsg.className = 'text-xs font-mono text-error block';
+                        }
+                        alert('Gagal: ' + (data.error || 'Passcode salah. Akses ditolak.'));
+                    }
+                } catch (err) {
+                    alert('Terjadi kesalahan jaringan saat memperbarui pengaturan.');
+                } finally {
+                    btnApply.disabled = false;
+                    btnApply.innerHTML = '<span class="material-symbols-outlined text-sm">lock</span> Apply Changes';
+                }
+            });
+        }
+
+        // Account Dropdown Toggle
+        const accountBtn = document.getElementById('account-menu-button');
+        const accountDropdown = document.getElementById('account-dropdown');
+
+        if (accountBtn && accountDropdown) {
+            accountBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                accountDropdown.classList.toggle('hidden');
+            });
+
+            document.addEventListener('click', (e) => {
+                if (!accountDropdown.contains(e.target) && !accountBtn.contains(e.target)) {
+                    accountDropdown.classList.add('hidden');
+                }
+            });
+        }
+    });
+</script>
+<!-- Help Center Modal -->
+<div id="help-modal" class="hidden fixed inset-0 z-[100] bg-background/80 backdrop-blur-md flex items-center justify-center p-4 sm:p-6 transition-all duration-300">
+    <div class="bg-surface-container-high border border-outline-variant/60 rounded-2xl shadow-2xl w-full max-w-3xl max-h-[85vh] flex flex-col overflow-hidden">
+        <div class="px-6 py-4 border-b border-outline-variant/30 flex justify-between items-center bg-surface-container">
+            <div class="flex items-center gap-2 text-primary font-bold text-base sm:text-lg">
+                <span class="material-symbols-outlined">help_outline</span>
+                <span>Pusat Bantuan MAVIS</span>
+            </div>
+            <button id="help-modal-close" class="w-8 h-8 rounded-full flex items-center justify-center text-on-surface-variant hover:text-error hover:bg-error/10 transition-colors">
+                <span class="material-symbols-outlined text-xl">close</span>
+            </button>
+        </div>
+        <div id="help-modal-body" class="p-6 overflow-y-auto prose prose-invert max-w-none text-on-surface text-xs sm:text-sm leading-relaxed space-y-4 font-sans">
+            <div class="flex items-center justify-center py-12 text-on-surface-variant">
+                <span class="material-symbols-outlined animate-spin text-2xl mr-2">progress_activity</span>
+                Memuat dokumentasi bantuan...
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script src="/assets/dashboard-common.js"></script>
+</body>
+</html>
